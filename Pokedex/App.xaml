@@ -3,6 +3,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Pokedex"
-    RequestedTheme="Light">
+    RequestedTheme="Light"
+    xmlns:converters="using:Pokedex.View.Converters">
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <x:String x:Key="BulbapediaApiBaseUrl">http://bulbapedia.bulbagarden.net/w/</x:String>
+            <x:String x:Key="BulbapediaBaseUrl">http://bulbapedia.bulbagarden.net/wiki/</x:String>
+            <converters:TypeColorConverter x:Key="TypeColorConverter"/>
+            <converters:ImageLinkLinkConverter x:Key="ImageLinkLinkConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+    
 </Application>
