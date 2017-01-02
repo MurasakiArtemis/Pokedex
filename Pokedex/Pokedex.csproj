@@ -99,18 +99,28 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Form.cs" />
+    <Compile Include="Model\Wrappers\AbilityName.cs" />
     <Compile Include="Model\AbilitySlot.cs" />
     <Compile Include="Model\PokemonBrief.cs" />
     <Compile Include="Model\Generation.cs" />
     <Compile Include="Model\KalosArea.cs" />
     <Compile Include="Model\Pokemon.cs" />
+    <Compile Include="Model\Wrappers\MegaStonePicture.cs" />
+    <Compile Include="Model\Wrappers\SlotType.cs" />
     <Compile Include="Model\PokemonType.cs" />
     <Compile Include="Model\Region.cs" />
+    <Compile Include="Model\Wrappers\RegionNumber.cs" />
+    <Compile Include="Model\TypeSlot.cs" />
     <Compile Include="Model\UrlQueryBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\PokemonListVM.cs" />
     <Compile Include="ViewModel\PokemonVM.cs" />
-    <Compile Include="View\Converters\ImageLinkLinkConverter.cs" />
+    <Compile Include="View\Converters\AbilitySlotVisibilityConverter.cs" />
+    <Compile Include="View\Converters\BooleanVisibilityConverter.cs" />
+    <Compile Include="View\Converters\StringFormatter.cs" />
+    <Compile Include="View\Converters\StringImageSourceConverter.cs" />
+    <Compile Include="View\Converters\StringVisibilityConverter.cs" />
     <Compile Include="View\Converters\TypeColorConverter.cs" />
     <Compile Include="View\PokemonDetail.xaml.cs">
       <DependentUpon>PokemonDetail.xaml</DependentUpon>

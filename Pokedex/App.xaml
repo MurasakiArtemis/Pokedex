@@ -11,7 +11,11 @@
             <x:String x:Key="BulbapediaApiBaseUrl">http://bulbapedia.bulbagarden.net/w/</x:String>
             <x:String x:Key="BulbapediaBaseUrl">http://bulbapedia.bulbagarden.net/wiki/</x:String>
             <converters:TypeColorConverter x:Key="TypeColorConverter"/>
-            <converters:ImageLinkLinkConverter x:Key="ImageLinkLinkConverter"/>
+            <converters:StringImageSourceConverter x:Key="StringImageSourceConverter"/>
+            <converters:StringFormatter x:Key="StringFormatter"/>
+            <converters:AbilitySlotVisibilityConverter x:Key="AbilitySlotVisibilityConverter"/>
+            <converters:StringVisibilityConverter x:Key="StringVisibilityConverter"/>
+            <converters:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
     

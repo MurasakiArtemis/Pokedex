@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Pokedex.View.Converters;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,7 +29,19 @@ namespace Pokedex.View
         {
             this.InitializeComponent();
             string pokemonName = "Mawile";
-            PokemonVM = new ViewModel.PokemonVM(pokemonName);
+            PokemonVM = new ViewModel.PokemonVM(pokemonName);            
+        }
+
+        private static double add(double value1)
+        {
+            return value1 + 0.01;
+        }
+
+        private void MegaStone_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (HyperlinkButton)sender;
+            var text = ((StackPanel)button.Content).Children.OfType<TextBlock>().Single(f => f.Name == "MegaStoneName").Text;
+            //Frame.Navigate();
         }
     }
 }

@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Pokedex.View.Converters
 {
-    class ImageLinkLinkConverter : IValueConverter
+    class StringImageSourceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -18,7 +19,10 @@ namespace Pokedex.View.Converters
             var fileLink = (string)value;
             HttpCommunication client = new HttpCommunication();
             var data = client.GetResponse(UrlQueryBuilder.PictureLocationQuery(fileLink)).Result;
-            return UrlQueryBuilder.PictureLocation(data);
+            var dataString = UrlQueryBuilder.PictureLocation(data);
+            Uri imageUri = new Uri(dataString);
+            BitmapImage imageBitmap = new BitmapImage(imageUri);
+            return imageBitmap;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

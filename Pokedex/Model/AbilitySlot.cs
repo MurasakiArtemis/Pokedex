@@ -2,6 +2,6 @@
 {
     public enum AbilitySlot
     {
-        First, Second, Hidden, AlternFormFirst, AlternFormSecond, AlternFormHidden, Mega
+        First, Second, Hidden, Mega
     }
 }
