@@ -10,162 +10,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
     <Page.Resources>
         <ResourceDictionary>
-            <Thickness x:Key="InternalMargin">4</Thickness>
-            <Style x:Key="WhitePropertyContainer" TargetType="Border">
-                <Setter Property="Margin" Value="{StaticResource InternalMargin}"/>
-                <Setter Property="Height" Value="Auto"/>
-                <Setter Property="Width" Value="Auto"/>
-                <Setter Property="Background" Value="White"/>
-                <Setter Property="CornerRadius" Value="8"/>
-            </Style>
-            <Style x:Key="ListBoxItemNoHighlight" TargetType="ListBoxItem">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="TabNavigation" Value="Local"/>
-                <Setter Property="Padding" Value="12,11,12,13"/>
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="UseSystemFocusVisuals" Value="True"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ListBoxItem">
-                            <Grid x:Name="LayoutRoot" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-                                <Grid.Resources>
-                                    <Style x:Key="BaseContentPresenterStyle" TargetType="ContentPresenter">
-                                        <Setter Property="FontFamily" Value="XamlAutoFontFamily"/>
-                                        <Setter Property="FontWeight" Value="SemiBold"/>
-                                        <Setter Property="FontSize" Value="15"/>
-                                        <Setter Property="TextWrapping" Value="Wrap"/>
-                                        <Setter Property="LineStackingStrategy" Value="MaxHeight"/>
-                                        <Setter Property="TextLineBounds" Value="Full"/>
-                                        <Setter Property="OpticalMarginAlignment" Value="TrimSideBearings"/>
-                                    </Style>
-                                    <Style x:Key="BodyContentPresenterStyle" BasedOn="{StaticResource BaseContentPresenterStyle}" TargetType="ContentPresenter">
-                                        <Setter Property="FontWeight" Value="Normal"/>
-                                        <Setter Property="FontSize" Value="15"/>
-                                    </Style>
-                                </Grid.Resources>
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="CommonStates">
-                                        <VisualState x:Name="Normal"/>
-                                        <VisualState x:Name="Disabled">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseMediumLowBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <!--<VisualState x:Name="PointerOver">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListLowBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>-->
-                                        <!--<VisualState x:Name="Pressed">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListMediumBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>-->
-                                        <!--<VisualState x:Name="Selected">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListAccentLowBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>-->
-                                        <!--<VisualState x:Name="SelectedUnfocused">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListAccentLowBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>-->
-                                        <!--<VisualState x:Name="SelectedPointerOver">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListAccentMediumBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>-->
-                                        <!--<VisualState x:Name="SelectedPressed">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListAccentHighBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>-->
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                                <Rectangle x:Name="PressedBackground" Fill="Transparent" Control.IsTemplateFocusTarget="True"/>
-                                <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" Style="{StaticResource BodyContentPresenterStyle}" TextWrapping="NoWrap" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="TransparentStretchHorizontalListBox" TargetType="ListBox">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItemNoHighlight}"/>
-                <Setter Property="ItemsPanel">
-                    <Setter.Value>
-                        <ItemsPanelTemplate>
-                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="TransparentStretchVerticalListBox" TargetType="ListBox">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItemNoHighlight}"/>
-                <Setter Property="ItemsPanel">
-                    <Setter.Value>
-                        <ItemsPanelTemplate>
-                            <StackPanel HorizontalAlignment="Center" Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="TypeContainer" TargetType="Border">
-                <Setter Property="Height" Value="Auto"/>
-                <Setter Property="Width" Value="80"/>
-                <Setter Property="CornerRadius" Value="8"/>
-            </Style>
-            <Style x:Key="BoldTextBlock" TargetType="TextBlock">
-                <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="TextAlignment" Value="Center"/>
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-            </Style>
-            <Style x:Key="RoundedGridContainer" TargetType="Grid">
-                <Setter Property="Margin" Value="16"/>
-                <Setter Property="CornerRadius" Value="8"/>
-            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -215,13 +64,6 @@
                         <Setter Target="BaseFriendshipSection.(Grid.ColumnSpan)" Value="6"/>
 
                         <Setter Target="NationalDexTextBlock.Style" Value="{ThemeResource BaseTextBlockStyle}"/>
-                        <Setter Target="TypesListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="AbilitiesListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="EggsGroupsListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="HeightListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="WeightListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="MegaStonesListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="RegionalNumbersListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
                     </VisualState.Setters>
                     </VisualState>
                 <VisualState x:Name="MediumLayout">
@@ -286,13 +128,6 @@
                         <Setter Target="BaseFriendshipSection.(Grid.ColumnSpan)" Value="6"/>
 
                         <Setter Target="NationalDexTextBlock.Style" Value="{ThemeResource TitleTextBlockStyle}"/>
-                        <Setter Target="TypesListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="AbilitiesListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="EggsGroupsListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="HeightListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="WeightListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="MegaStonesListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="RegionalNumbersListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="LargeLayout">
@@ -358,13 +193,6 @@
                         <Setter Target="BaseFriendshipSection.(Grid.ColumnSpan)" Value="3"/>
 
                         <Setter Target="NationalDexTextBlock.Style" Value="{ThemeResource BaseTextBlockStyle}"/>
-                        <Setter Target="TypesListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="AbilitiesListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="EggsGroupsListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="HeightListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="WeightListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="MegaStonesListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
-                        <Setter Target="RegionalNumbersListBox.Style" Value="{StaticResource TransparentStretchVerticalListBox}"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VeryLargeLayout">
@@ -430,13 +258,6 @@
                         <Setter Target="BaseFriendshipSection.(Grid.ColumnSpan)" Value="3"/>
 
                         <Setter Target="NationalDexTextBlock.Style" Value="{ThemeResource BaseTextBlockStyle}"/>
-                        <Setter Target="TypesListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="AbilitiesListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="EggsGroupsListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="HeightListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="WeightListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="MegaStonesListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
-                        <Setter Target="RegionalNumbersListBox.Style" Value="{StaticResource TransparentStretchHorizontalListBox}"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -475,21 +296,16 @@
                 <!--Name, Category-->
                 <Border x:Name="NameCategorySection" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Style="{StaticResource WhitePropertyContainer}" BorderThickness="{StaticResource InternalMargin}" BorderBrush="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, ConverterParameter=Lighter}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Style="{ThemeResource TitleTextBlockStyle}" FontWeight="Bold" Text="{x:Bind PokemonVM.CurrentPokemon.Name}"/>
+                        <HyperlinkButton NavigateUri="{x:Bind PokemonVM.CurrentPokemon.URL}" Style="{ThemeResource TextBlockButtonStyle}" ToolTipService.ToolTip="See the full article">
+                            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" FontWeight="Bold" Text="{x:Bind PokemonVM.CurrentPokemon.Name}"/>
+                        </HyperlinkButton>
                         <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center" Text="{x:Bind PokemonVM.CurrentPokemon.Category}"/>
                     </StackPanel>
                 </Border>
                 <!--Japanese Name, Japanese Romaji-->
                 <Border x:Name="JapaneseNameSection" Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="4" Style="{StaticResource WhitePropertyContainer}" BorderThickness="{StaticResource InternalMargin}" BorderBrush="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, ConverterParameter=Lighter}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Style="{ThemeResource TextBlockButtonStyle}">
-                            <Button.Flyout>
-                                <Flyout>
-                                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind PokemonVM.CurrentPokemon.JapaneseTransliteration}"></TextBlock>
-                                </Flyout>
-                            </Button.Flyout>
-                            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind PokemonVM.CurrentPokemon.JapaneseName}"/>
-                        </Button>
+                        <TextBlock Style="{ThemeResource TitleTextBlockStyle}" TextAlignment="Center" Text="{x:Bind PokemonVM.CurrentPokemon.JapaneseName}"/>
                         <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center" Text="{x:Bind PokemonVM.CurrentPokemon.JapaneseRomanizedName}"/>
                     </StackPanel>
                 </Border>
@@ -526,28 +342,28 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Types" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListBox x:Name="TypesListBox" Style="{StaticResource TransparentStretchHorizontalListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
-                            <ListBox.ItemTemplate>
+                        <ListView x:Name="TypesListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
+                            <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Form">
                                     <StackPanel>
-                                        <ListBox Style="{StaticResource TransparentStretchHorizontalListBox}" ItemsSource="{x:Bind Types}">
-                                            <ListBox.ItemTemplate>
+                                        <ListView Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind Types}">
+                                            <ListView.ItemTemplate>
                                                 <DataTemplate x:DataType="wrappers:SlotType">
                                                     <Border Style="{StaticResource TypeContainer}" Background="{x:Bind Type, Converter={StaticResource TypeColorConverter}}">
                                                         <TextBlock TextAlignment="Center" Foreground="White" Text="{x:Bind Type}"/>
                                                     </Border>
                                                 </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
                                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind Name}" HorizontalAlignment="Center" />
                                     </StackPanel>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Border>
                 </Grid>
 
-                <!--Abilities and Form Name Repair Misalignment-->
+                <!--Abilities and Form Name-->
                 <Grid x:Name="AbilitiesSection" Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="12" Style="{StaticResource RoundedGridContainer}" Background="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, ConverterParameter=Lighter}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -555,25 +371,25 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Abilities" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListBox x:Name="AbilitiesListBox" Style="{StaticResource TransparentStretchHorizontalListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
-                            <ListBox.ItemTemplate>
+                        <ListView x:Name="AbilitiesListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
+                            <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Form">
                                     <StackPanel HorizontalAlignment="Stretch">
-                                        <ListBox Style="{StaticResource TransparentStretchHorizontalListBox}" ItemsSource="{x:Bind Abilities}">
-                                            <ListBox.ItemTemplate>
+                                        <ListView Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind Abilities}">
+                                            <ListView.ItemTemplate>
                                                 <DataTemplate x:DataType="wrappers:AbilityName">
                                                     <StackPanel>
                                                         <TextBlock TextAlignment="Center" Text="{x:Bind Name}"/>
                                                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" TextAlignment="Center" Text="{x:Bind AbilitySlot}" Visibility="{x:Bind AbilitySlot, Converter={StaticResource AbilitySlotVisibilityConverter}}"/>
                                                     </StackPanel>
                                                 </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
                                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind Name}" TextAlignment="Center"/>
                                     </StackPanel>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Border>
                 </Grid>
 
@@ -622,7 +438,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Egg Groups" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListBox x:Name="EggsGroupsListBox" Style="{StaticResource TransparentStretchHorizontalListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.EggGroups}"/>
+                        <ListView x:Name="EggsGroupsListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.EggGroups}"/>
                     </Border>
                 </Grid>
                 <!--Hatch Time-->
@@ -645,16 +461,16 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Height" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListBox x:Name="HeightListBox" Style="{StaticResource TransparentStretchHorizontalListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
-                            <ListBox.ItemTemplate>
+                        <ListView x:Name="HeightListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
+                            <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Form">
                                     <StackPanel>
                                         <TextBlock Text="{x:Bind Height, Converter={StaticResource StringFormatter}, ConverterParameter=Metres}" HorizontalAlignment="Center" />
                                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind Name}" HorizontalAlignment="Center" />
                                     </StackPanel>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Border>
                 </Grid>
                 <!--Weight-->
@@ -665,16 +481,16 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Weight" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListBox x:Name="WeightListBox" Style="{StaticResource TransparentStretchHorizontalListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
-                            <ListBox.ItemTemplate>
+                        <ListView x:Name="WeightListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
+                            <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Form">
                                     <StackPanel>
                                         <TextBlock Text="{x:Bind Weight, Converter={StaticResource StringFormatter}, ConverterParameter=Kilograms}" HorizontalAlignment="Center" />
                                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind Name}" HorizontalAlignment="Center" />
                                     </StackPanel>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Border>
                 </Grid>
 
@@ -686,16 +502,16 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Regional Numbers" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListBox x:Name="RegionalNumbersListBox" Style="{StaticResource TransparentStretchHorizontalListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.RegionsAndNumbers}">
-                            <ListBox.ItemTemplate>
+                        <ListView x:Name="RegionalNumbersListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.RegionsAndNumbers}">
+                            <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="wrappers:RegionNumber">
                                     <StackPanel>
                                         <TextBlock Text="{x:Bind RegionalDex}" TextAlignment="Center"/>
                                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind Region}" TextAlignment="Center"/>
                                     </StackPanel>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Border>
                 </Grid>
 
@@ -707,8 +523,8 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Mega Stone" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListBox x:Name="MegaStonesListBox" Style="{StaticResource TransparentStretchHorizontalListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.MegaStones}" VerticalAlignment="Center">
-                            <ListBox.ItemTemplate>
+                        <ListView x:Name="MegaStonesListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.MegaStones}" VerticalAlignment="Center">
+                            <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="wrappers:MegaStonePicture">
                                     <HyperlinkButton x:Name="MegaStone" Click="MegaStone_Click">
                                         <StackPanel Orientation="Horizontal">
@@ -717,8 +533,8 @@
                                         </StackPanel>
                                     </HyperlinkButton>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Border>
                 </Grid>
                 
@@ -730,7 +546,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Experience yield" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <TextBlock Text="{x:Bind PokemonVM.CurrentPokemon.ExperienceYield}" TextAlignment="Center"/>
+                        <TextBlock Text="{x:Bind PokemonVM.CurrentPokemon.ExperienceYield}" TextAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
                 <!--Base Friendship-->
@@ -741,13 +557,11 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Base Friendship" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <TextBlock Text="{x:Bind PokemonVM.CurrentPokemon.BaseFriendship}" TextAlignment="Center"/>
+                        <TextBlock Text="{x:Bind PokemonVM.CurrentPokemon.BaseFriendship}" TextAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
 
                 <ProgressRing Grid.Row="0" Grid.ColumnSpan="12" IsActive="{x:Bind PokemonVM.IsBusy}"/>
-                <TextBlock x:Name="TestTextBlock" Grid.Row="0" Grid.ColumnSpan="12" Text="Hola!"/>
-
             </Grid>
         </ScrollViewer>
     </Grid>

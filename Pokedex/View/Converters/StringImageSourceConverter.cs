@@ -1,5 +1,6 @@
 ﻿using Pokedex.Communication;
 using Pokedex.Model;
+using Pokedex.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace Pokedex.View.Converters
                 throw new ArgumentException("Value is not of type string");
             var fileLink = (string)value;
             HttpCommunication client = new HttpCommunication();
-            var data = client.GetResponse(UrlQueryBuilder.PictureLocationQuery(fileLink)).Result;
-            var dataString = UrlQueryBuilder.PictureLocation(data);
+            var data = client.GetResponse(UrlQueryBuilder.BasePictureLocationQuery(fileLink)).Result;
+            var dataString = JsonDataExtractor.ExtractPictureUrl(data);
             Uri imageUri = new Uri(dataString);
             BitmapImage imageBitmap = new BitmapImage(imageUri);
             return imageBitmap;

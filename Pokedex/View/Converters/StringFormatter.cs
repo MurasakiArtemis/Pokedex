@@ -23,10 +23,24 @@ namespace Pokedex.View.Converters
                 text = $"{(double)value} Kg";
                 break;
             case "GenderPercent":
-                text = $"{(1 - (double)value) * 100}% Male, {(double)value * 100}% Female";
+                {
+                    var number = (double)value;
+                    for(double i = 0.125; i < 1; i += 0.125)
+                    {
+                        if(number < i)
+                        {
+                            number = i;
+                            break;
+                        }
+                    }
+                    text = $"{(1 - number) * 100}% Male, {number * 100}% Female";
+                }
                 break;
             case "PokemonNumber":
                 text = $"# {(int)value}";
+                break;
+            case "PokemonListNumber":
+                text = ((int)value).ToString("D3");
                 break;
             default:
                 text = $"{(double)value}";

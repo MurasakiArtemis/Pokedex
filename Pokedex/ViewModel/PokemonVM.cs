@@ -51,12 +51,18 @@ namespace Pokedex.ViewModel
                 }
             }
         }
+        public PokemonVM()
+        { }
 
-        public PokemonVM(string pokemonName)
+        public void GetPokemon(string pokemonName)
         {
             IsBusy = true;
             HttpCommunication source = new HttpCommunication();
             int section = 0;
+            if (pokemonName.StartsWith("Alolan"))
+                pokemonName.Remove(0, "Alolan".Length);
+            if(pokemonName.StartsWith("Mega"))
+                pokemonName.Remove(0, "Mega".Length);
             string pokemonBaseData = source.GetResponse(Model.UrlQueryBuilder.PokemonContentQuery(pokemonName, section)).Result;
             CurrentPokemon = GetPokemonFromJson(pokemonBaseData);
             IsBusy = false;
@@ -67,9 +73,11 @@ namespace Pokedex.ViewModel
             string[] pokemonData = ExtractJsonData(data);
             Func<string, string> extractionFunction = (attributeName) =>
             {
-                var pokemonDataSelection = pokemonData.Where(p => p.Contains($"{attributeName}="));
+                var pokemonDataSelection = pokemonData.Where(p => p.StartsWith($"{attributeName}=")).Select(p => p.Replace($"{attributeName}=", ""));
                 if (pokemonDataSelection.Count() > 0)
-                    return pokemonDataSelection.ElementAt(0).Replace($"{attributeName}=", "");
+                {
+                    return pokemonDataSelection.First();
+                }
                 return "";
             };
             var NationalDex = int.Parse(extractionFunction("ndex"));
@@ -132,7 +140,7 @@ namespace Pokedex.ViewModel
         {
             string temporalPictureResult = extractionFunction($"image{formNumber}");
             if (string.IsNullOrEmpty(temporalPictureResult))
-                temporalPictureResult = $"{nationalDex}{name}.png";
+                temporalPictureResult = $"{nationalDex.ToString("D3")}{name}.png";
             return $"File:{temporalPictureResult}";
         }
         private ObservableCollection<SlotType> ExtractFormTypes(Func<string, string> extractionFunction, int typesAmount, int formNumber, ref ObservableCollection<Form> Forms)
@@ -202,7 +210,11 @@ namespace Pokedex.ViewModel
                         break;
                     }
                     if (formNumber != 1 && string.IsNullOrEmpty(temporalAbilityResult))
-                        temporalAbilityResult = Forms.First().Abilities.Where(p => p.AbilitySlot == abilitySlot).First().Name;
+                    {
+                        var baseAbility = Forms.First().Abilities.Where(p => p.AbilitySlot == abilitySlot);
+                        if(baseAbility.Count() != 0)
+                            temporalAbilityResult = baseAbility.Single().Name;
+                    }
                     if (!string.IsNullOrEmpty(temporalAbilityResult))
                         Abilities.Add(new AbilityName() { AbilitySlot = abilitySlot, Name = temporalAbilityResult });
                 }
@@ -288,12 +300,10 @@ namespace Pokedex.ViewModel
         }
         private string[] ExtractJsonData(string data)
         {
-            JObject jsonData = JObject.Parse(data);
-            JToken result = jsonData["query"]["pages"].ElementAt(0).First["revisions"].Last.Last.Last;
-            string semiparsedData = result.ToString(Formatting.None);
-            string replacedString = semiparsedData.Replace("\"", "").Replace("\\n", "");
-            string pokemonDataString = replacedString.Split(new string[] { "{{", "}}" }, System.StringSplitOptions.RemoveEmptyEntries).Where(p => p.Contains("Infobox")).ElementAt(0);
-            string[] pokemonData = pokemonDataString.Split('|');
+            var replacedString = JsonDataExtractor.ExtractContent(data);
+            replacedString = replacedString.Replace("{{tt|", "");           
+            string pokemonDataString = replacedString.Split(new string[] { "}}{{", "}}|}", "}}'" }, System.StringSplitOptions.RemoveEmptyEntries).Where(p => p.Contains("Infobox")).Single();
+            string[] pokemonData = pokemonDataString.Split('|', '<', '>');
             return pokemonData;
         }
 

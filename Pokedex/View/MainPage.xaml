@@ -1,0 +1,80 @@
+﻿<Page
+    x:Class="Pokedex.View.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Pokedex.View"
+    xmlns:converters="using:Pokedex.View.Converters"
+    xmlns:vm="using:Pokedex.ViewModel"
+    xmlns:model="using:Pokedex.Model"
+    xmlns:wrappers="using:Pokedex.Model.Wrappers"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid x:Name="ExternalContainer" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStates">
+                <VisualState x:Name="SmallLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ContentFrame.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="ContentFrame.(Grid.Column)" Value="0"/>
+                        <Setter Target="NavMenu.DisplayMode" Value="Overlay"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MediumLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="641"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="LargeLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1008"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VeryLargeLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1300"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Style="{StaticResource SplitViewTogglePaneButtonStyle}" Click="HamburgerButton_Click"/>
+        <RelativePanel Grid.Column="1">
+            <AutoSuggestBox RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" QueryIcon="Find" VerticalAlignment="Stretch"/>
+        </RelativePanel>
+        <Frame x:Name="ContentFrame" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ProgressRing IsActive="{x:Bind IsBusy}"/>
+        </Frame>
+        <SplitView x:Name="NavMenu" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="48" HorizontalAlignment="Left" Grid.Row="1" Grid.ColumnSpan="2">
+            <SplitView.Pane>
+                <ListView ItemClick="NavListView_ItemClick" ItemsSource="{x:Bind PaneObjectsList}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="wrappers:PaneIconDescription">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{x:Bind Icon}"/>
+                                <TextBlock VerticalAlignment="Center" Text="{x:Bind Description}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SplitView.Pane>
+        </SplitView>
+    </Grid>
+</Page>

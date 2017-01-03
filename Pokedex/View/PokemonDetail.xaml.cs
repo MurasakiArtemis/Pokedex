@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,8 +29,7 @@ namespace Pokedex.View
         public PokemonDetail()
         {
             this.InitializeComponent();
-            string pokemonName = "Mawile";
-            PokemonVM = new ViewModel.PokemonVM(pokemonName);            
+            PokemonVM = new ViewModel.PokemonVM();
         }
 
         private static double add(double value1)
@@ -42,6 +42,28 @@ namespace Pokedex.View
             var button = (HyperlinkButton)sender;
             var text = ((StackPanel)button.Content).Children.OfType<TextBlock>().Single(f => f.Name == "MegaStoneName").Text;
             //Frame.Navigate();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            PokemonVM.IsBusy = true;
+            string pokemonName = (string)e.Parameter;
+            PokemonVM.GetPokemon(pokemonName);
+            PokemonVM.IsBusy = false;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack? AppViewBackButtonVisibility.Visible: AppViewBackButtonVisibility.Collapsed;
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            PokemonVM.IsBusy = true;
+            if (Frame.CanGoBack && !e.Handled)
+            {
+                e.Handled = true;
+                Frame.GoBack();
+            }
+            PokemonVM.IsBusy = false;
         }
     }
 }

@@ -96,10 +96,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Communication\HttpCommunication.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Model\Form.cs" />
+    <Compile Include="Model\ResourceType.cs" />
     <Compile Include="Model\Wrappers\AbilityName.cs" />
     <Compile Include="Model\AbilitySlot.cs" />
     <Compile Include="Model\PokemonBrief.cs" />
@@ -107,14 +105,16 @@
     <Compile Include="Model\KalosArea.cs" />
     <Compile Include="Model\Pokemon.cs" />
     <Compile Include="Model\Wrappers\MegaStonePicture.cs" />
+    <Compile Include="Model\Wrappers\PaneIconDescription.cs" />
     <Compile Include="Model\Wrappers\SlotType.cs" />
     <Compile Include="Model\PokemonType.cs" />
     <Compile Include="Model\Region.cs" />
     <Compile Include="Model\Wrappers\RegionNumber.cs" />
     <Compile Include="Model\TypeSlot.cs" />
-    <Compile Include="Model\UrlQueryBuilder.cs" />
+    <Compile Include="ViewModel\JsonDataExtractor.cs" />
+    <Compile Include="ViewModel\UrlQueryBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\PokemonListVM.cs" />
+    <Compile Include="ViewModel\PokemonBriefVM.cs" />
     <Compile Include="ViewModel\PokemonVM.cs" />
     <Compile Include="View\Converters\AbilitySlotVisibilityConverter.cs" />
     <Compile Include="View\Converters\BooleanVisibilityConverter.cs" />
@@ -122,6 +122,9 @@
     <Compile Include="View\Converters\StringImageSourceConverter.cs" />
     <Compile Include="View\Converters\StringVisibilityConverter.cs" />
     <Compile Include="View\Converters\TypeColorConverter.cs" />
+    <Compile Include="View\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PokemonDetail.xaml.cs">
       <DependentUpon>PokemonDetail.xaml</DependentUpon>
     </Compile>
@@ -136,6 +139,10 @@
     <None Include="Pokedex_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Icon-1.ico" />
+    <Content Include="Assets\Icon-2.ico" />
+    <Content Include="Assets\Icon-3.ico" />
+    <Content Include="Assets\Icon-4.ico" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -150,9 +157,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="View\MainPage.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="View\PokemonDetail.xaml">
       <SubType>Designer</SubType>

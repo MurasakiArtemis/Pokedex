@@ -1,16 +1,19 @@
-﻿using System;
+﻿using Pokedex.Model.Wrappers;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Pokedex.Model
 {
-    class PokemonBrief : INotifyPropertyChanged
+    public class PokemonBrief : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
         void RaiseProperty([CallerMemberName]string propertyName = "")
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
@@ -44,8 +47,23 @@ namespace Pokedex.Model
             }
         }
 
-        private PokemonType[] _types;
-        public PokemonType[] Type
+        private BitmapImage _image;
+        public BitmapImage Image
+        {
+            get { return _image; }
+            set
+            {
+                if (value != _image)
+                {
+                    _image = value;
+                    RaiseProperty();
+                }
+            }
+        }
+
+
+        private ObservableCollection<SlotType> _types;
+        public ObservableCollection<SlotType> Types
         {
             get { return _types; }
             set
