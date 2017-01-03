@@ -48,21 +48,20 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="32"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="140"/>
         </Grid.ColumnDefinitions>
         <Button Style="{StaticResource SplitViewTogglePaneButtonStyle}" Click="HamburgerButton_Click"/>
-        <RelativePanel Grid.Column="1">
-            <AutoSuggestBox RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" QueryIcon="Find" VerticalAlignment="Stretch"/>
-        </RelativePanel>
-        <Frame x:Name="ContentFrame" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <AutoSuggestBox Grid.Column="2" RelativePanel.AlignRightWithPanel="True" QueryIcon="Find" Margin="0,0,0,0" TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" PlaceholderText="Search"/>
+        <Frame x:Name="ContentFrame" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <ProgressRing IsActive="{x:Bind IsBusy}"/>
         </Frame>
-        <SplitView x:Name="NavMenu" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="48" HorizontalAlignment="Left" Grid.Row="1" Grid.ColumnSpan="2">
+        <SplitView Background="Transparent" x:Name="NavMenu" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="32" HorizontalAlignment="Left" Grid.Row="1" Grid.ColumnSpan="2">
             <SplitView.Pane>
                 <ListView ItemClick="NavListView_ItemClick" ItemsSource="{x:Bind PaneObjectsList}">
                     <ListView.ItemTemplate>

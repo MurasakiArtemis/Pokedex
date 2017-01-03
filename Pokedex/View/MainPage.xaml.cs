@@ -2,6 +2,7 @@
 using Pokedex.Model.Wrappers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -73,6 +74,32 @@ namespace Pokedex.View
             case ResourceType.Item:
             default:
                 break;
+            }
+        }
+        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (ContentFrame.Content is PokemonList)
+                {
+                    var frame = ContentFrame.Content as PokemonList;
+                    var filteredItems = frame.ContentList.Where(p => p.ToLowerInvariant().StartsWith(sender.Text.ToLowerInvariant()));
+                    if (filteredItems.Count() != 0)
+                        sender.ItemsSource = filteredItems;
+                    else
+                        sender.ItemsSource = new string[] { "No results" };
+                }
+            }
+        }
+        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (ContentFrame.Content is PokemonList)
+            {
+                var frame = ContentFrame.Content as PokemonList;
+                var query = args.QueryText.ToLowerInvariant();
+                query = char.ToUpper(query[0]) + query.Substring(1);
+                if (frame.ContentList.Contains(query))
+                    frame.NavigableFrame.Navigate(typeof(PokemonDetail), query);                    
             }
         }
     }

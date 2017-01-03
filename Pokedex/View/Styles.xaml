@@ -122,8 +122,8 @@
 
         <Setter Property="FontFamily" Value="{ThemeResource SymbolThemeFontFamily}" />
         <Setter Property="Content" Value="&#xE700;" />
-        <Setter Property="Height" Value="48" />
-        <Setter Property="Width" Value="48" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Width" Value="32" />
 
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="FontSize" Value="20" />

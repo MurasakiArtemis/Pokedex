@@ -1,6 +1,7 @@
 ﻿using Pokedex.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -21,17 +22,15 @@ namespace Pokedex.View
     public sealed partial class PokemonList : Page
     {
         private int start, end;
-        public ViewModel.PokemonBriefVM PokemonBriefVM;
+        public ViewModel.PokemonBriefVM PokemonBriefVM { get; set; }
+        public IEnumerable<string> ContentList { get { return PokemonBriefVM.DataList; } }
+        public Frame NavigableFrame { get { return VisualStates.CurrentState == SmallLayout ? Frame : DetailsFrame; } }
         public PokemonList()
         {
             this.InitializeComponent();
             PokemonBriefVM = new ViewModel.PokemonBriefVM();
             this.DataContext = PokemonBriefVM;
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
-        }
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

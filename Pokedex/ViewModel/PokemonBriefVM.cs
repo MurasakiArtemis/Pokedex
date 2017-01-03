@@ -25,6 +25,8 @@ namespace Pokedex.ViewModel
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private IEnumerable<string> PokemonCompleteListData;
+
         private bool _isBusy;
         public bool IsBusy
         {
@@ -100,8 +102,7 @@ namespace Pokedex.ViewModel
             FirstIndex = 1;
             ElementsPerView = 5;
         }
-
-        private IEnumerable<string> pokemonCompleteListData;
+        public IEnumerable<string> DataList { get{ return PokemonCompleteListData.Select(p => p.Split('|').ElementAt(3)); } }
         private void GetPokemonListFromJson()
         {
             PokemonBriefList.Clear();
@@ -147,7 +148,7 @@ namespace Pokedex.ViewModel
                 result &= nationalDex < end;
                 return result;
             };
-            var pokemonDataEnumerable = pokemonCompleteListData.Where(whereFunction).Select(selectionFunction);
+            var pokemonDataEnumerable = PokemonCompleteListData.Where(whereFunction).Select(selectionFunction);
             return pokemonDataEnumerable;
         }
         public void GetPokemonList()
@@ -156,9 +157,9 @@ namespace Pokedex.ViewModel
             HttpCommunication source = new HttpCommunication();
             string urlQuery = UrlQueryBuilder.PokemonListQuery();
             string pokemonListBaseData = source.GetResponse(urlQuery).Result;
-            pokemonCompleteListData = ExtractFullJsonData(pokemonListBaseData);
-            var numberOfPokemon = pokemonCompleteListData.Count();
-            var lastPokemonData = pokemonCompleteListData.ElementAt(numberOfPokemon - 1);
+            PokemonCompleteListData = ExtractFullJsonData(pokemonListBaseData);
+            var numberOfPokemon = PokemonCompleteListData.Count();
+            var lastPokemonData = PokemonCompleteListData.ElementAt(numberOfPokemon - 1);
             var splitedString = lastPokemonData.Split('|');
             LastPokemonDex = int.Parse(Regex.Replace(splitedString.ElementAt(2), "[A-Za-z ]", ""));
             GetPokemonListFromJson();
