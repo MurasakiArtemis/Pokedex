@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Pokedex.Communication
@@ -15,7 +9,6 @@ namespace Pokedex.Communication
         public HttpCommunication()
         {
             client = new HttpClient();
-            //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
         public async Task<string> GetResponse(string url)
         {

@@ -88,7 +88,7 @@ namespace Pokedex.Model
                 }
             }
         }
-        public PokemonType PrimaryType { get { return Types.Where(p => p.Slot == TypeSlot.Primary).First().Type; } }
+        public PokemonType PrimaryType { get { return Types.Where(p => p.Slot == TypeSlot.Primary).Single().Type; } }
 
         private double _height;
         public double Height

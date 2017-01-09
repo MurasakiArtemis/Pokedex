@@ -11,6 +11,7 @@ using Pokedex.Model.Wrappers;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace Pokedex.ViewModel
 {
@@ -28,7 +29,7 @@ namespace Pokedex.ViewModel
         public bool IsBusy
         {
             get { return _isBusy; }
-            set
+            private set
             {
                 if (value != _isBusy)
                 {
@@ -53,22 +54,21 @@ namespace Pokedex.ViewModel
         }
         public PokemonVM()
         { }
-
-        public void GetPokemon(string pokemonName)
+        public async Task GetPokemon(string pokemonName)
         {
-            IsBusy = true;
             HttpCommunication source = new HttpCommunication();
+            IsBusy = true;
             int section = 0;
             if (pokemonName.StartsWith("Alolan"))
                 pokemonName.Remove(0, "Alolan".Length);
             if(pokemonName.StartsWith("Mega"))
                 pokemonName.Remove(0, "Mega".Length);
-            string pokemonBaseData = source.GetResponse(Model.UrlQueryBuilder.PokemonContentQuery(pokemonName, section)).Result;
-            CurrentPokemon = GetPokemonFromJson(pokemonBaseData);
+            string pokemonBaseData = await source.GetResponse(Model.UrlQueryBuilder.PokemonContentQuery(pokemonName, section));
+            Pokemon pokemon = await GetPokemonFromJson(pokemonBaseData);
+            CurrentPokemon = pokemon;
             IsBusy = false;
         }
-
-        private Pokemon GetPokemonFromJson(string data)
+        private async Task<Pokemon> GetPokemonFromJson(string data)
         {
             string[] pokemonData = ExtractJsonData(data);
             Func<string, string> extractionFunction = (attributeName) =>
@@ -78,47 +78,52 @@ namespace Pokedex.ViewModel
                 {
                     return pokemonDataSelection.First();
                 }
-                return "";
+                return null;
             };
             var NationalDex = int.Parse(extractionFunction("ndex"));
             var Name = extractionFunction("name");
+            int formsNumber;
+            if (!int.TryParse(extractionFunction("forme"), out formsNumber))
+                formsNumber = 1;
+            int typesNumber;
+            if (!int.TryParse(extractionFunction("typebox"), out typesNumber))
+                typesNumber = 2;
+            var taskForms = ExtractForms(extractionFunction, typesNumber, formsNumber, Name, NationalDex);
             var JapaneseName = extractionFunction("jname");
             var JapaneseTransliteration = extractionFunction("jtranslit");
             var JapaneseRomanizedName = extractionFunction("tmname");
             var RegionsAndNumbers = ExtractRegionsAndNumbers(extractionFunction);
             var Category = extractionFunction("category");
-            int typesNumber;
-            int formsNumber;
-            if (!int.TryParse(extractionFunction("forme"), out formsNumber))
-                formsNumber = 1;
-            if (!int.TryParse(extractionFunction("typebox"), out typesNumber))
-                typesNumber = 2;
-            var Forms = ExtractForms(extractionFunction, typesNumber, formsNumber, Name, NationalDex);
             bool hasMega;
             var MegaStones = ExtractMegaStones(extractionFunction, formsNumber, out hasMega);
             int eggGroupNumber = int.Parse(extractionFunction("egggroupn"));
             var EggGroups = ExtractEggGroups(extractionFunction, eggGroupNumber);
             var HatchTime = int.Parse(extractionFunction("eggcycles")) * 257;
             var ExperienceYield = int.Parse(extractionFunction("expyield"));
-            var GenderCode = double.Parse(extractionFunction("gendercode")) / 254;
+            var temporalGenderCode = double.Parse(extractionFunction("gendercode"));
+            var GenderCode = temporalGenderCode == 255? -1 : temporalGenderCode / 254;
             var CatchRate = int.Parse(extractionFunction("catchrate"));
             var IntroducedGeneration = (Generation)Enum.GetValues(typeof(Generation)).GetValue(int.Parse(extractionFunction("generation")) - 1);
             var BaseFriendship = int.Parse(extractionFunction("friendship"));
             var URL = UrlQueryBuilder.PokemonUrlQuery(Name);
+            var Forms = await taskForms;
             return new Pokemon() { NationalDex = NationalDex, Name = Name, JapaneseName = JapaneseName, JapaneseTransliteration = JapaneseTransliteration,
                 JapaneseRomanizedName = JapaneseRomanizedName, RegionsAndNumbers = RegionsAndNumbers, Category = Category, Forms = Forms, HasMega = hasMega,
                 MegaStones = MegaStones, EggGroups = EggGroups, HatchTime = HatchTime, ExperienceYield = ExperienceYield, GenderCode = GenderCode,
                 CatchRate = CatchRate, IntroducedGeneration = IntroducedGeneration, BaseFriendship = BaseFriendship, URL = URL};
         }
-        private ObservableCollection<Form> ExtractForms(Func<string, string> extractionFunction, int typesAmount, int formsAmount, string name, int nationalDex)
+        private async Task<ObservableCollection<Form>> ExtractForms(Func<string, string> extractionFunction, int typesAmount, int formsAmount, string name, int nationalDex)
         {
             var forms = new ObservableCollection<Form>();
             for (int i = 1; i <= formsAmount; i++)
             {
                 var temporalNameResult = ExtractFormName(extractionFunction, i, name);
                 var temporalImageRelativeLinkResult = ExtractFormPicture(extractionFunction, i, name, nationalDex);
-                var converter = new StringImageSourceConverter();
-                var temporalImageResult = (BitmapImage)converter.Convert(temporalImageRelativeLinkResult, typeof(BitmapImage), null, null);
+                var client = new HttpCommunication();
+                var linkData = await client.GetResponse(UrlQueryBuilder.BasePictureLocationQuery(temporalImageRelativeLinkResult));
+                var dataString = JsonDataExtractor.ExtractPictureUrl(linkData);
+                var imageUri = new Uri(dataString);
+                var temporalImageResult = new BitmapImage(imageUri);
                 var heightResult = ExtractFormHeight(extractionFunction, i, ref forms);
                 var weightResult = ExtractFormWeight(extractionFunction, i, ref forms);
                 var Types = ExtractFormTypes(extractionFunction, typesAmount, i, ref forms);
@@ -146,15 +151,22 @@ namespace Pokedex.ViewModel
         private ObservableCollection<SlotType> ExtractFormTypes(Func<string, string> extractionFunction, int typesAmount, int formNumber, ref ObservableCollection<Form> Forms)
         {
             var types = new ObservableCollection<SlotType>();
+            bool requiresBase = true;
             for (int j = 1; j <= typesAmount; j++)
             {
                 string temporalTypeResult = extractionFunction($"{(formNumber != 1 ? $"form{formNumber}" : "")}type{j}");
                 if (string.IsNullOrEmpty(temporalTypeResult))
                     temporalTypeResult = "None";
                 PokemonType result = (PokemonType)Enum.Parse(typeof(PokemonType), temporalTypeResult);
-                if (formNumber != 1 && result == PokemonType.None)
-                    result = Forms.First().Types.ElementAt(j - 1).Type;
-                types.Add(new SlotType() { Slot = j == 1 ? TypeSlot.Primary : TypeSlot.Secondary, Type = result });
+                if (j == 1 && result != PokemonType.None)
+                    requiresBase = false;
+                if (formNumber != 1 && result == PokemonType.None && requiresBase)
+                {
+                    if(j <= Forms.First().Types.Count)
+                        result = Forms.First().Types.ElementAt(j - 1).Type;
+                }
+                if (result != PokemonType.None)
+                    types.Add(new SlotType() { Slot = j == 1 ? TypeSlot.Primary : TypeSlot.Secondary, Type = result });
             }
             return types;
         }
@@ -247,6 +259,8 @@ namespace Pokedex.ViewModel
             var eggGroups = new ObservableCollection<string>();
             for (int i = 1; i <= eggGroupNumber; i++)
                 eggGroups.Add(extractionFunction($"egggroup{i}"));
+            if(eggGroupNumber == 0)
+                eggGroups.Add("Undiscovered");
             return eggGroups;
         }
         private ObservableCollection<RegionNumber> ExtractRegionsAndNumbers(Func<string, string> extractionFunction)

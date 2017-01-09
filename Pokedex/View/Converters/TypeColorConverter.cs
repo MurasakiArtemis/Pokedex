@@ -11,7 +11,6 @@ using Windows.UI.Xaml.Media;
 
 namespace Pokedex.View.Converters
 {
-    //[ValueConversion(typeof(string), typeof(Color))]
     class TypeColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

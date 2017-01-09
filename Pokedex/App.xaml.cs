@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
+using Windows.Foundation.Metadata;
+using Windows.UI.ViewManagement;
+using Windows.UI;
 
 namespace Pokedex
 {
@@ -85,6 +88,26 @@ namespace Pokedex
                 SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
 
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = rootFrame.CanGoBack? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+
+                //PC customization
+                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
+                {
+                    var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+                    if (titleBar != null)
+                    {
+                    }
+                }
+
+                //Mobile customization
+                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+                {
+
+                    var statusBar = StatusBar.GetForCurrentView();
+                    if (statusBar != null)
+                    {
+                        statusBar.HideAsync().GetResults();
+                    }
+                }
 
                 // Ensure the current window is active
                 Window.Current.Activate();

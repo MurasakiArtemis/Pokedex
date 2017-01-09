@@ -16,13 +16,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Pokedex.View
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class PokemonDetail : Page
     {
         private Pokedex.ViewModel.PokemonVM PokemonVM { get; set; }
@@ -31,39 +26,33 @@ namespace Pokedex.View
             this.InitializeComponent();
             PokemonVM = new ViewModel.PokemonVM();
         }
-
-        private static double add(double value1)
-        {
-            return value1 + 0.01;
-        }
-
         private void MegaStone_Click(object sender, RoutedEventArgs e)
         {
             var button = (HyperlinkButton)sender;
             var text = ((StackPanel)button.Content).Children.OfType<TextBlock>().Single(f => f.Name == "MegaStoneName").Text;
             //Frame.Navigate();
         }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            PokemonVM.IsBusy = true;
             string pokemonName = (string)e.Parameter;
-            PokemonVM.GetPokemon(pokemonName);
-            PokemonVM.IsBusy = false;
+            LoadInformation(pokemonName);
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack? AppViewBackButtonVisibility.Visible: AppViewBackButtonVisibility.Collapsed;
         }
-
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
         {
-            PokemonVM.IsBusy = true;
             if (Frame.CanGoBack && !e.Handled)
             {
                 e.Handled = true;
                 Frame.GoBack();
             }
-            PokemonVM.IsBusy = false;
+        }
+
+        private async void LoadInformation(string pokemonName)
+        {
+            await PokemonVM.GetPokemon(pokemonName);
+            Bindings.Update();
         }
     }
 }

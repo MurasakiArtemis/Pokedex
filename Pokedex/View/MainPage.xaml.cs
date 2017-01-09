@@ -28,14 +28,14 @@ namespace Pokedex.View
     public sealed partial class MainPage : Page
     {
         private List<PaneIconDescription> PaneObjectsList;
-        private bool IsBusy;
+        private IEnumerable<string> dataList;
         public MainPage()
         {
             this.InitializeComponent();
             PaneObjectsList = new List<PaneIconDescription>();
-            PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Pokemon, Description = "Pokémon", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Icon-1.ico")) });
-            PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Ability, Description = "Abilities", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Icon-2.ico")) });
-            PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Item, Description = "Items", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Icon-2.ico")) });
+            PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Pokemon, Description = "Pokémon", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Square71x71Logo.scale-100.png")) });
+            //PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Ability, Description = "Abilities", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Icon-2.ico")) });
+            //PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Item, Description = "Items", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Icon-2.ico")) });
         }
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
@@ -44,23 +44,20 @@ namespace Pokedex.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            IsBusy = true;
-            ContentFrame.Navigate(typeof(PokemonList), new int[2] { 1, 20 });
-            IsBusy = false;
+            ContentFrame.Navigate(typeof(PokemonList));
             Frame rootFrame = Window.Current.Content as Frame;
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = rootFrame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
         }
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
         {
-            IsBusy = true;
             if (ContentFrame.CanGoBack && !e.Handled)
             {
                 e.Handled = true;
                 ContentFrame.GoBack();
             }
-            IsBusy = false;
         }
+
         private void NavListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             PaneIconDescription clickedItem = (PaneIconDescription)e.ClickedItem;
@@ -80,10 +77,9 @@ namespace Pokedex.View
         {
             if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                if (ContentFrame.Content is PokemonList)
+                if (!string.IsNullOrEmpty(sender.Text))
                 {
-                    var frame = ContentFrame.Content as PokemonList;
-                    var filteredItems = frame.ContentList.Where(p => p.ToLowerInvariant().StartsWith(sender.Text.ToLowerInvariant()));
+                    var filteredItems = dataList.Where(p => p.ToLowerInvariant().StartsWith(sender.Text.ToLowerInvariant())).GroupBy(p => p).Select(p => p.First());
                     if (filteredItems.Count() != 0)
                         sender.ItemsSource = filteredItems;
                     else
@@ -93,13 +89,30 @@ namespace Pokedex.View
         }
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
+            if(!string.IsNullOrEmpty(args.QueryText))
+            {
+                var query = args.QueryText.ToLowerInvariant();
+                query = char.ToUpper(query[0]) + query.Substring(1);
+                if (ContentFrame.Content is PokemonList)
+                {
+                    var frame = ContentFrame.Content as PokemonList;
+                    if (dataList.Contains(query))
+                        frame.NavigableFrame.Navigate(typeof(PokemonDetail), query);
+                }
+                else if (ContentFrame.Content is PokemonDetail)
+                {
+                    if (dataList.Contains(query))
+                        ContentFrame.Navigate(typeof(PokemonDetail), query);
+                }
+            }
+        }
+
+        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
             if (ContentFrame.Content is PokemonList)
             {
                 var frame = ContentFrame.Content as PokemonList;
-                var query = args.QueryText.ToLowerInvariant();
-                query = char.ToUpper(query[0]) + query.Substring(1);
-                if (frame.ContentList.Contains(query))
-                    frame.NavigableFrame.Navigate(typeof(PokemonDetail), query);                    
+                dataList = frame.ContentList;
             }
         }
     }

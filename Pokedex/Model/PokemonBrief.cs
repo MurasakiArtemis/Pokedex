@@ -47,6 +47,20 @@ namespace Pokedex.Model
             }
         }
 
+        private string _imageRelativeLink;
+        public string ImageRelativeLink
+        {
+            get { return _imageRelativeLink; }
+            set
+            {
+                if (value != _imageRelativeLink)
+                {
+                    _imageRelativeLink = value;
+                    RaiseProperty();
+                }
+            }
+        }
+
         private BitmapImage _image;
         public BitmapImage Image
         {
@@ -60,7 +74,7 @@ namespace Pokedex.Model
                 }
             }
         }
-
+        public PokemonType PrimaryType { get { return Types.Where(p => p.Slot == TypeSlot.Primary).Single().Type; } }
 
         private ObservableCollection<SlotType> _types;
         public ObservableCollection<SlotType> Types

@@ -16,6 +16,8 @@
             <converters:AbilitySlotVisibilityConverter x:Key="AbilitySlotVisibilityConverter"/>
             <converters:StringVisibilityConverter x:Key="StringVisibilityConverter"/>
             <converters:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter"/>
+            <converters:FrameStringConverter x:Key="FrameStringConverter"/>
+            <converters:DoubleBrushConverter x:Key="DoubleBrushConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="View/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>

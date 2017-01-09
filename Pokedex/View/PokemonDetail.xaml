@@ -12,9 +12,6 @@
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -28,106 +25,23 @@
                     <VisualState.Setters>
                         <Setter Target="ExternalContainer.Margin" Value="0,0,0,0"/>
                         <Setter Target="ImagesSection.Height" Value="200"/>
-                        
-                        <Setter Target="NameCategorySection.(Grid.Row)" Value="0"/>
-                        <Setter Target="JapaneseNameSection.(Grid.Row)" Value="0"/>
-                        <Setter Target="NationalDexSection.(Grid.Row)" Value="0"/>
-                        <Setter Target="ImagesSection.(Grid.Row)" Value="1"/>
-                        <Setter Target="TypesSection.(Grid.Row)" Value="3"/>
-                        <Setter Target="AbilitiesSection.(Grid.Row)" Value="4"/>
-                        <Setter Target="GenderSection.(Grid.Row)" Value="6"/>
-                        <Setter Target="CatchRateSection.(Grid.Row)" Value="6"/>
-                        <Setter Target="EggGroupsSection.(Grid.Row)" Value="7"/>
-                        <Setter Target="HatchTimeSection.(Grid.Row)" Value="7"/>
-                        <Setter Target="HeightSection.(Grid.Row)" Value="8"/>
-                        <Setter Target="WeightSection.(Grid.Row)" Value="8"/>
-                        <Setter Target="RegionalNumbersSection.(Grid.Row)" Value="9"/>
-                        <Setter Target="MegaStonesSection.(Grid.Row)" Value="10"/>
-                        <Setter Target="ExperienceYieldSection.(Grid.Row)" Value="11"/>
-                        <Setter Target="BaseFriendshipSection.(Grid.Row)" Value="11"/>
-
-                        <Setter Target="NameCategorySection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="JapaneseNameSection.(Grid.ColumnSpan)" Value="4"/>
-                        <Setter Target="NationalDexSection.(Grid.ColumnSpan)" Value="2"/>
-                        <Setter Target="ImagesSection.(Grid.ColumnSpan)" Value="8"/>
-                        <Setter Target="TypesSection.(Grid.ColumnSpan)" Value="12"/>
-                        <Setter Target="AbilitiesSection.(Grid.ColumnSpan)" Value="12"/>
-                        <Setter Target="GenderSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="CatchRateSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="EggGroupsSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="HatchTimeSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="HeightSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="WeightSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="MegaStonesSection.(Grid.ColumnSpan)" Value="12"/>
-                        <Setter Target="RegionalNumbersSection.(Grid.ColumnSpan)" Value="12"/>
-                        <Setter Target="ExperienceYieldSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="BaseFriendshipSection.(Grid.ColumnSpan)" Value="6"/>
-
                         <Setter Target="NationalDexTextBlock.Style" Value="{ThemeResource BaseTextBlockStyle}"/>
                     </VisualState.Setters>
-                    </VisualState>
+                </VisualState>
                 <VisualState x:Name="MediumLayout">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="641"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="ExternalContainer.Margin" Value="12,0,12,0"/>
-                        <Setter Target="ImagesSection.Height" Value="200"/>
-                        
-                        <Setter Target="NameCategorySection.(Grid.Row)" Value="0"/>
-                        <Setter Target="JapaneseNameSection.(Grid.Row)" Value="0"/>
-                        <Setter Target="NationalDexSection.(Grid.Row)" Value="0"/>
-                        <Setter Target="ImagesSection.(Grid.Row)" Value="1"/>
-                        <Setter Target="TypesSection.(Grid.Row)" Value="3"/>
-                        <Setter Target="AbilitiesSection.(Grid.Row)" Value="4"/>
-                        <Setter Target="GenderSection.(Grid.Row)" Value="6"/>
-                        <Setter Target="CatchRateSection.(Grid.Row)" Value="6"/>
-                        <Setter Target="EggGroupsSection.(Grid.Row)" Value="7"/>
-                        <Setter Target="HatchTimeSection.(Grid.Row)" Value="7"/>
-                        <Setter Target="HeightSection.(Grid.Row)" Value="8"/>
-                        <Setter Target="WeightSection.(Grid.Row)" Value="8"/>
-                        <Setter Target="RegionalNumbersSection.(Grid.Row)" Value="9"/>
-                        <Setter Target="MegaStonesSection.(Grid.Row)" Value="10"/>
-                        <Setter Target="ExperienceYieldSection.(Grid.Row)" Value="11"/>
-                        <Setter Target="BaseFriendshipSection.(Grid.Row)" Value="11"/>
-
-                        <Setter Target="NameCategorySection.(Grid.Column)" Value="0"/>
-                        <Setter Target="JapaneseNameSection.(Grid.Column)" Value="6"/>
-                        <Setter Target="NationalDexSection.(Grid.Column)" Value="10"/>
-                        <Setter Target="ImagesSection.(Grid.Column)" Value="2"/>
-                        <Setter Target="TypesSection.(Grid.Column)" Value="0"/>
-                        <Setter Target="AbilitiesSection.(Grid.Column)" Value="0"/>
-                        <Setter Target="GenderSection.(Grid.Column)" Value="0"/>
-                        <Setter Target="CatchRateSection.(Grid.Column)" Value="6"/>
-                        <Setter Target="EggGroupsSection.(Grid.Column)" Value="0"/>
-                        <Setter Target="HatchTimeSection.(Grid.Column)" Value="6"/>
-                        <Setter Target="HeightSection.(Grid.Column)" Value="0"/>
-                        <Setter Target="WeightSection.(Grid.Column)" Value="6"/>
-                        <Setter Target="MegaStonesSection.(Grid.Column)" Value="0"/>
-                        <Setter Target="RegionalNumbersSection.(Grid.Column)" Value="0"/>
-                        <Setter Target="ExperienceYieldSection.(Grid.Column)" Value="0"/>
-                        <Setter Target="BaseFriendshipSection.(Grid.Column)" Value="6"/>
-
-                        <Setter Target="ImagesSection.(Grid.RowSpan)" Value="2"/>
-
-                        <Setter Target="NameCategorySection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="JapaneseNameSection.(Grid.ColumnSpan)" Value="4"/>
-                        <Setter Target="NationalDexSection.(Grid.ColumnSpan)" Value="2"/>
-                        <Setter Target="ImagesSection.(Grid.ColumnSpan)" Value="8"/>
-                        <Setter Target="TypesSection.(Grid.ColumnSpan)" Value="12"/>
-                        <Setter Target="AbilitiesSection.(Grid.ColumnSpan)" Value="12"/>
-                        <Setter Target="GenderSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="CatchRateSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="EggGroupsSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="HatchTimeSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="HeightSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="WeightSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="MegaStonesSection.(Grid.ColumnSpan)" Value="12"/>
-                        <Setter Target="RegionalNumbersSection.(Grid.ColumnSpan)" Value="12"/>
-                        <Setter Target="ExperienceYieldSection.(Grid.ColumnSpan)" Value="6"/>
-                        <Setter Target="BaseFriendshipSection.(Grid.ColumnSpan)" Value="6"/>
-
-                        <Setter Target="NationalDexTextBlock.Style" Value="{ThemeResource TitleTextBlockStyle}"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MediumBigLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="930"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TypesListView.Style" Value="{StaticResource HorizontalCenteredListView}"/>
+                        <Setter Target="AbilitiesListView.Style" Value="{StaticResource HorizontalCenteredListView}"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="LargeLayout">
@@ -135,7 +49,6 @@
                         <AdaptiveTrigger MinWindowWidth="1008"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="ExternalContainer.Margin" Value="12,0,12,0"/>
                         <Setter Target="ImagesSection.Height" Value="300"/>
 
                         <Setter Target="NameCategorySection.(Grid.Row)" Value="0"/>
@@ -151,9 +64,9 @@
                         <Setter Target="HeightSection.(Grid.Row)" Value="2"/>
                         <Setter Target="WeightSection.(Grid.Row)" Value="2"/>
                         <Setter Target="RegionalNumbersSection.(Grid.Row)" Value="3"/>
-                        <Setter Target="MegaStonesSection.(Grid.Row)" Value="4"/>
-                        <Setter Target="ExperienceYieldSection.(Grid.Row)" Value="5"/>
-                        <Setter Target="BaseFriendshipSection.(Grid.Row)" Value="5"/>
+                        <Setter Target="ExperienceYieldSection.(Grid.Row)" Value="4"/>
+                        <Setter Target="BaseFriendshipSection.(Grid.Row)" Value="4"/>
+                        <Setter Target="MegaStonesSection.(Grid.Row)" Value="5"/>
 
                         <Setter Target="NameCategorySection.(Grid.Column)" Value="0"/>
                         <Setter Target="JapaneseNameSection.(Grid.Column)" Value="3"/>
@@ -171,9 +84,6 @@
                         <Setter Target="MegaStonesSection.(Grid.Column)" Value="6"/>
                         <Setter Target="ExperienceYieldSection.(Grid.Column)" Value="6"/>
                         <Setter Target="BaseFriendshipSection.(Grid.Column)" Value="9"/>
-
-                        <Setter Target="ImagesSection.(Grid.RowSpan)" Value="2"/>
-                        <Setter Target="AbilitiesSection.(Grid.RowSpan)" Value="2"/>
 
                         <Setter Target="NameCategorySection.(Grid.ColumnSpan)" Value="3"/>
                         <Setter Target="JapaneseNameSection.(Grid.ColumnSpan)" Value="2"/>
@@ -200,7 +110,6 @@
                         <AdaptiveTrigger MinWindowWidth="1300"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="ExternalContainer.Margin" Value="12,0,12,0"/>
                         <Setter Target="ImagesSection.Height" Value="400"/>
 
                         <Setter Target="NameCategorySection.(Grid.Row)" Value="0"/>
@@ -216,9 +125,9 @@
                         <Setter Target="HeightSection.(Grid.Row)" Value="2"/>
                         <Setter Target="WeightSection.(Grid.Row)" Value="2"/>
                         <Setter Target="RegionalNumbersSection.(Grid.Row)" Value="3"/>
-                        <Setter Target="MegaStonesSection.(Grid.Row)" Value="4"/>
-                        <Setter Target="ExperienceYieldSection.(Grid.Row)" Value="5"/>
-                        <Setter Target="BaseFriendshipSection.(Grid.Row)" Value="5"/>
+                        <Setter Target="ExperienceYieldSection.(Grid.Row)" Value="4"/>
+                        <Setter Target="BaseFriendshipSection.(Grid.Row)" Value="4"/>
+                        <Setter Target="MegaStonesSection.(Grid.Row)" Value="5"/>
 
                         <Setter Target="NameCategorySection.(Grid.Column)" Value="0"/>
                         <Setter Target="JapaneseNameSection.(Grid.Column)" Value="3"/>
@@ -236,9 +145,6 @@
                         <Setter Target="MegaStonesSection.(Grid.Column)" Value="6"/>
                         <Setter Target="ExperienceYieldSection.(Grid.Column)" Value="6"/>
                         <Setter Target="BaseFriendshipSection.(Grid.Column)" Value="9"/>
-
-                        <Setter Target="ImagesSection.(Grid.RowSpan)" Value="2"/>
-                        <Setter Target="AbilitiesSection.(Grid.RowSpan)" Value="2"/>
 
                         <Setter Target="NameCategorySection.(Grid.ColumnSpan)" Value="3"/>
                         <Setter Target="JapaneseNameSection.(Grid.ColumnSpan)" Value="2"/>
@@ -262,8 +168,9 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        <ProgressBar IsIndeterminate="True" Visibility="{x:Bind PokemonVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
         <ScrollViewer>
-            <Grid x:Name="ExternalContainer" Background="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}}" Style="{StaticResource RoundedGridContainer}" Margin="0,0,12,0">
+            <Grid x:Name="ExternalContainer" Background="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, Mode=OneWay}" Style="{StaticResource RoundedGridContainer}" Margin="12,0,12,0" Visibility="{x:Bind PokemonVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -305,7 +212,7 @@
                 <!--Japanese Name, Japanese Romaji-->
                 <Border x:Name="JapaneseNameSection" Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="4" Style="{StaticResource WhitePropertyContainer}" BorderThickness="{StaticResource InternalMargin}" BorderBrush="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, ConverterParameter=Lighter}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Style="{ThemeResource TitleTextBlockStyle}" TextAlignment="Center" Text="{x:Bind PokemonVM.CurrentPokemon.JapaneseName}"/>
+                        <TextBlock Style="{ThemeResource TitleTextBlockStyle}" TextAlignment="Center" Text="{x:Bind PokemonVM.CurrentPokemon.JapaneseName}" ToolTipService.ToolTip="{x:Bind PokemonVM.CurrentPokemon.JapaneseTransliteration}"/>
                         <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center" Text="{x:Bind PokemonVM.CurrentPokemon.JapaneseRomanizedName}"/>
                     </StackPanel>
                 </Border>
@@ -342,11 +249,11 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Types" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListView x:Name="TypesListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
+                        <ListView x:Name="TypesListView" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}" Style="{StaticResource VerticalCenteredListView}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Form">
                                     <StackPanel>
-                                        <ListView Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind Types}">
+                                        <ListView ItemsSource="{x:Bind Types}" Style="{StaticResource HorizontalCenteredListView}">
                                             <ListView.ItemTemplate>
                                                 <DataTemplate x:DataType="wrappers:SlotType">
                                                     <Border Style="{StaticResource TypeContainer}" Background="{x:Bind Type, Converter={StaticResource TypeColorConverter}}">
@@ -371,11 +278,11 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Abilities" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListView x:Name="AbilitiesListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
+                        <ListView x:Name="AbilitiesListView" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}" Style="{StaticResource VerticalCenteredListView}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Form">
                                     <StackPanel HorizontalAlignment="Stretch">
-                                        <ListView Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind Abilities}">
+                                        <ListView ItemsSource="{x:Bind Abilities}" Style="{StaticResource HorizontalCenteredListView}">
                                             <ListView.ItemTemplate>
                                                 <DataTemplate x:DataType="wrappers:AbilityName">
                                                     <StackPanel>
@@ -405,16 +312,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="12" Margin="8" RadiusX="8" RadiusY="8" Stroke="Black" StrokeThickness="2" Grid.Row="0" Grid.RowSpan="1">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                    <GradientStop Color="Pink" Offset="0"/>
-                                    <GradientStop Color="Pink" Offset="{x:Bind PokemonVM.CurrentPokemon.GenderCode}"/>
-                                    <GradientStop Color="Blue" Offset="{x:Bind local:PokemonDetail.add(PokemonVM.CurrentPokemon.GenderCode)}"/>
-                                    <GradientStop Color="Blue" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
+                        <Rectangle Fill="{x:Bind PokemonVM.CurrentPokemon.GenderCode, Converter={StaticResource DoubleBrushConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="12" Margin="8" RadiusX="8" RadiusY="8" Stroke="Black" StrokeThickness="2" Grid.Row="0" Grid.RowSpan="1"/>
                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind PokemonVM.CurrentPokemon.GenderCode, Converter={StaticResource StringFormatter}, ConverterParameter=GenderPercent}" TextAlignment="Center" Grid.Row="1"/>
                     </Grid>
                 </Grid>
@@ -438,7 +336,13 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Egg Groups" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListView x:Name="EggsGroupsListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.EggGroups}"/>
+                        <ListView x:Name="EggsGroupsListView" Style="{StaticResource VerticalCenteredListView}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.EggGroups}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String" >
+                                    <TextBlock Text="{x:Bind}" TextAlignment="Center"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Border>
                 </Grid>
                 <!--Hatch Time-->
@@ -461,7 +365,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Height" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListView x:Name="HeightListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
+                        <ListView x:Name="HeightListView" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}" Style="{StaticResource VerticalCenteredListView}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Form">
                                     <StackPanel>
@@ -474,14 +378,14 @@
                     </Border>
                 </Grid>
                 <!--Weight-->
-                <Grid x:Name="WeightSection" Grid.Row="9" Grid.Column="6" Grid.ColumnSpan="6" Style="{StaticResource RoundedGridContainer}" Background="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, ConverterParameter=Lighter}">
+                <Grid x:Name="WeightSection" Grid.Row="8" Grid.Column="6" Grid.ColumnSpan="6" Style="{StaticResource RoundedGridContainer}" Background="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, ConverterParameter=Lighter}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Weight" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListView x:Name="WeightListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}">
+                        <ListView x:Name="WeightListView" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.Forms}" Style="{StaticResource VerticalCenteredListView}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Form">
                                     <StackPanel>
@@ -502,12 +406,17 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Regional Numbers" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListView x:Name="RegionalNumbersListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.RegionsAndNumbers}">
+                        <ListView x:Name="RegionalNumbersListView" Style="{StaticResource HorizontalCenteredListView}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.RegionsAndNumbers}">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsWrapGrid HorizontalAlignment="Center" Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="wrappers:RegionNumber">
                                     <StackPanel>
                                         <TextBlock Text="{x:Bind RegionalDex}" TextAlignment="Center"/>
-                                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind Region}" TextAlignment="Center"/>
+                                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind Region, Converter={StaticResource StringFormatter}, ConverterParameter=Region}" TextAlignment="Center" ToolTipService.ToolTip="{x:Bind Region, Converter={StaticResource StringFormatter}, ConverterParameter=RegionTooltip}"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -523,10 +432,10 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Mega Stone" Style="{StaticResource BoldTextBlock}"/>
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
-                        <ListView x:Name="MegaStonesListView" Style="{StaticResource TransparentListBox}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.MegaStones}" VerticalAlignment="Center">
+                        <ListView x:Name="MegaStonesListView" Style="{StaticResource HorizontalCenteredListView}" ItemsSource="{x:Bind PokemonVM.CurrentPokemon.MegaStones}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="wrappers:MegaStonePicture">
-                                    <HyperlinkButton x:Name="MegaStone" Click="MegaStone_Click">
+                                    <HyperlinkButton x:Name="MegaStone" Click="MegaStone_Click" ToolTipService.ToolTip="{x:Bind Name, Converter={StaticResource StringFormatter}, ConverterParameter=MegaStoneTooltip}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="{x:Bind Image}"/>
                                             <TextBlock x:Name="MegaStoneName" Text="{x:Bind Name}" TextAlignment="Center"/>
@@ -537,7 +446,7 @@
                         </ListView>
                     </Border>
                 </Grid>
-                
+
                 <!--Experience Yield-->
                 <Grid x:Name="ExperienceYieldSection" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="6" Style="{StaticResource RoundedGridContainer}" Background="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, ConverterParameter=Lighter}">
                     <Grid.RowDefinitions>
@@ -560,8 +469,6 @@
                         <TextBlock Text="{x:Bind PokemonVM.CurrentPokemon.BaseFriendship}" TextAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
-
-                <ProgressRing Grid.Row="0" Grid.ColumnSpan="12" IsActive="{x:Bind PokemonVM.IsBusy}"/>
             </Grid>
         </ScrollViewer>
     </Grid>

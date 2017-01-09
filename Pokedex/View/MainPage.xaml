@@ -19,8 +19,6 @@
                         <AdaptiveTrigger MinWindowWidth="0"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="ContentFrame.(Grid.ColumnSpan)" Value="2"/>
-                        <Setter Target="ContentFrame.(Grid.Column)" Value="0"/>
                         <Setter Target="NavMenu.DisplayMode" Value="Overlay"/>
                     </VisualState.Setters>
                 </VisualState>
@@ -48,32 +46,32 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="32"/>
+            <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Button Style="{StaticResource SplitViewTogglePaneButtonStyle}" Click="HamburgerButton_Click"/>
-        <AutoSuggestBox Grid.Column="2" RelativePanel.AlignRightWithPanel="True" QueryIcon="Find" Margin="0,0,0,0" TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" PlaceholderText="Search"/>
-        <Frame x:Name="ContentFrame" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ProgressRing IsActive="{x:Bind IsBusy}"/>
-        </Frame>
-        <SplitView Background="Transparent" x:Name="NavMenu" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="32" HorizontalAlignment="Left" Grid.Row="1" Grid.ColumnSpan="2">
+        <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource SplitViewTogglePaneButtonStyle}" Click="HamburgerButton_Click"/>
+        <AutoSuggestBox Grid.Row="0" Grid.Column="2" QueryIcon="Find" Margin="0,8,0,8" TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" PlaceholderText="{x:Bind ContentFrame.Content, Converter={StaticResource FrameStringConverter}}" MinWidth="160"/>
+        <SplitView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="Transparent" x:Name="NavMenu" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="48" HorizontalAlignment="Stretch">
             <SplitView.Pane>
                 <ListView ItemClick="NavListView_ItemClick" ItemsSource="{x:Bind PaneObjectsList}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="wrappers:PaneIconDescription">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{x:Bind Icon}"/>
+                                <Image Height="48" Source="{x:Bind Icon}"/>
                                 <TextBlock VerticalAlignment="Center" Text="{x:Bind Description}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </SplitView.Pane>
+            <SplitView.Content>
+                <Frame x:Name="ContentFrame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Navigated="ContentFrame_Navigated"/>
+            </SplitView.Content>
         </SplitView>
     </Grid>
 </Page>
