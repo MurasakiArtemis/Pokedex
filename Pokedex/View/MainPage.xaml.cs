@@ -1,5 +1,6 @@
 ﻿using Pokedex.Model;
 using Pokedex.Model.Wrappers;
+using Pokedex.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -97,11 +98,11 @@ namespace Pokedex.View
             {
                 var query = args.QueryText.ToLowerInvariant();
                 query = char.ToUpper(query[0]) + query.Substring(1);
-                if (ContentFrame.Content is PokemonList)
+                if (ContentFrame.Content is INavigableFrame)
                 {
-                    var frame = ContentFrame.Content as PokemonList;
+                    var frame = ContentFrame.Content as INavigableFrame;
                     if (dataList.Contains(query))
-                        frame.NavigableFrame.Navigate(typeof(PokemonDetail), query);
+                        frame.NavigateDefault(query);
                 }
                 else if (ContentFrame.Content is PokemonDetail)
                 {
@@ -116,9 +117,9 @@ namespace Pokedex.View
         }
         private void PopulateQueryList()
         {
-            if (ContentFrame.Content is PokemonList)
+            if (ContentFrame.Content is IContentList)
             {
-                var frame = ContentFrame.Content as PokemonList;
+                var frame = ContentFrame.Content as IContentList;
                 dataList = frame.ContentList;
             }
         }

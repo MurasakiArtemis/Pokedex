@@ -57,6 +57,10 @@ namespace Pokedex.View
                 Frame.Navigate(typeof(PokemonDetail), pokemon.Name);
             else
                 DetailsFrame.Navigate(typeof(PokemonDetail), pokemon.Name);
-        }     
+        }
+        public void NavigateDefault(object parameter)
+        {
+            NavigableFrame.Navigate(typeof(PokemonDetail), parameter);
+        }
     }
 }
