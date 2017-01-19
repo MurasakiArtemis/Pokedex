@@ -12,6 +12,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
+            <vm:PokemonVM x:Key="PokemonVM" x:Name="PokemonVM" />
         </ResourceDictionary>
     </Page.Resources>
 
@@ -171,8 +172,8 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ProgressBar IsIndeterminate="True" Visibility="{x:Bind PokemonVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Text="An error occurred, Check your internet configuration and try again later &#x0a;If the error keeps occurring please leave details of the error" Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}" TextWrapping="WrapWholeWords"/>
-        <ScrollViewer Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Text="An error occurred, Check your internet configuration and try again later &#x0a;If the error keeps occurring please leave details of the error" Visibility="{x:Bind PokemonVM.IsError, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}" TextWrapping="WrapWholeWords"/>
+        <ScrollViewer Visibility="{x:Bind PokemonVM.IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
             <Grid x:Name="ExternalContainer" Background="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, Mode=OneWay}" Style="{StaticResource RoundedGridContainer}" Margin="12,0,12,0" Visibility="{x:Bind PokemonVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

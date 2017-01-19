@@ -263,20 +263,6 @@ namespace Pokedex.Model
             }
         }
 
-        private ObservableCollection<EvolutionLink> _evolutions;
-        public ObservableCollection<EvolutionLink> Evolutions
-        {
-            get { return _evolutions; }
-            set
-            {
-                if (value != _evolutions)
-                {
-                    _evolutions = value;
-                    RaiseProperty();
-                }
-            }
-        }
-
         private string url;
         public string URL
         {

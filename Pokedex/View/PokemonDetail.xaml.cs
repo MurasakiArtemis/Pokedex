@@ -20,13 +20,10 @@ namespace Pokedex.View
 {
     public sealed partial class PokemonDetail : Page
     {
-        private Pokedex.ViewModel.PokemonVM PokemonVM { get; set; }
         public PokemonDetail()
         {
             this.InitializeComponent();
-            PokemonVM = new ViewModel.PokemonVM();
         }
-        public bool IsError { get; set; }
         private void MegaStone_Click(object sender, RoutedEventArgs e)
         {
             var button = (HyperlinkButton)sender;
@@ -36,15 +33,8 @@ namespace Pokedex.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            try
-            {
-                string pokemonName = (string)e.Parameter;
-                LoadInformation(pokemonName);
-            }
-            catch
-            {
-                IsError = true;
-            }
+            string pokemonName = (string)e.Parameter;
+            LoadInformation(pokemonName);
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack? AppViewBackButtonVisibility.Visible: AppViewBackButtonVisibility.Collapsed;
         }
@@ -58,14 +48,7 @@ namespace Pokedex.View
         }
         private async void LoadInformation(string pokemonName)
         {
-            try
-            {
-                await PokemonVM.GetPokemon(pokemonName);
-            }
-            catch
-            {
-                IsError = true;
-            }
+            await PokemonVM.GetPokemon(pokemonName);
             Bindings.Update();
         }
     }

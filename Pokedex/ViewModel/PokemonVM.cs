@@ -21,6 +21,7 @@ namespace Pokedex.ViewModel
     {
         private Pokemon _currentPokemon;
         private bool _isBusy;
+        private bool _isError;
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         void RaiseProperty([CallerMemberName]string propertyName = "")
         {
@@ -34,6 +35,18 @@ namespace Pokedex.ViewModel
                 if (value != _isBusy)
                 {
                     _isBusy = value;
+                    RaiseProperty();
+                }
+            }
+        }
+        public bool IsError
+        {
+            get { return _isError; }
+            set
+            {
+                if (value != _isError)
+                {
+                    _isError = value;
                     RaiseProperty();
                 }
             }
@@ -67,7 +80,7 @@ namespace Pokedex.ViewModel
             }
             catch
             {
-                throw;
+                IsError = true;
             }
             finally
             {

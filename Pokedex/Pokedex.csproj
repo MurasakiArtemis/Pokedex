@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Communication\HttpCommunication.cs" />
     <Compile Include="Model\Form.cs" />
+    <Compile Include="Model\PokemonSection.cs" />
     <Compile Include="Model\ResourceType.cs" />
     <Compile Include="Model\Wrappers\AbilityName.cs" />
     <Compile Include="Model\AbilitySlot.cs" />
