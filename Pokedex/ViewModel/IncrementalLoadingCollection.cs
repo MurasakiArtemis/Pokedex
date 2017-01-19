@@ -30,7 +30,7 @@ namespace Pokedex.ViewModel
         {
             return InnerLoadMoreItemsAsync(count).AsAsyncOperation();
         }
-        private IEnumerable<PokemonBrief> ExtractJsonData(long start, long end)
+        private IEnumerable<PokemonBrief> GetElementsList(long start, long end)
         {
             Func<string, PokemonBrief> selectionFunction = p =>
             {
@@ -63,23 +63,34 @@ namespace Pokedex.ViewModel
         }
         private async Task<LoadMoreItemsResult> InnerLoadMoreItemsAsync(uint expectedCount)
         {
-            var pokemonListData = ExtractJsonData(Count, Count + expectedCount);
-            if (pokemonListData != null && pokemonListData.Any())
+            var pokemonListData = GetElementsList(Count, Count + expectedCount);
+            int startingCount = Count;
+            //List<Task> tasks = new List<Task>();
+            try
             {
-                foreach (var pokemonElement in pokemonListData)
-                {
-                    HttpCommunication client = new HttpCommunication();
-                    var linkData = await client.GetResponse(UrlQueryBuilder.BasePictureLocationQuery(pokemonElement.ImageRelativeLink));
-                    var dataString = JsonDataExtractor.ExtractPictureUrl(linkData);
-                    Uri imageUri = new Uri(dataString);
-                    BitmapImage image = new BitmapImage(imageUri);
-                    pokemonElement.Image = image;
-                    Add(pokemonElement);
-                }
+                if (pokemonListData != null && pokemonListData.Any())
+                    foreach (var pokemonElement in pokemonListData)
+                        //tasks.Add(LoadIndividualItem(pokemonElement));
+                        await LoadIndividualItem(pokemonElement);
+                else
+                    throw new Exception();
+                //await Task.WhenAll(tasks);
             }
-            else
+            catch
+            {
                 MaxItems = Count;
-            return new LoadMoreItemsResult { Count = (uint)pokemonListData.Count() };
+            }
+            return new LoadMoreItemsResult { Count = (uint)(Count - startingCount) };
+        }
+        private async Task LoadIndividualItem(PokemonBrief pokemonElement)
+        {
+            HttpCommunication client = new HttpCommunication();
+            var linkData = await client.GetResponse(UrlQueryBuilder.BasePictureLocationQuery(pokemonElement.ImageRelativeLink));
+            var dataString = JsonDataExtractor.ExtractPictureUrl(linkData);
+            Uri imageUri = new Uri(dataString);
+            BitmapImage image = new BitmapImage(imageUri);
+            pokemonElement.Image = image;
+            Add(pokemonElement);
         }
     }
 }

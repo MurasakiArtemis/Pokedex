@@ -15,7 +15,7 @@ namespace Pokedex.ViewModel
             JObject jsonData = JObject.Parse(data);
             JToken result = jsonData["query"]["pages"].ElementAt(0).First["revisions"].Last.Last.Last;
             string semiparsedData = result.ToString(Formatting.None);
-            return semiparsedData.Replace("\"", "").Replace("\\n", "");
+            return semiparsedData;
         }
         public static string ExtractPictureUrl(string data)
         {
@@ -24,5 +24,39 @@ namespace Pokedex.ViewModel
             string semiparsedData = result.ToString(Formatting.None).Replace("\"", "");
             return semiparsedData;
         }
+        public static List<Section> ExtractSectionList(string data)
+        {
+            JObject jsonData = JObject.Parse(data);
+            var result = jsonData["parse"]["sections"];
+            return JsonConvert.DeserializeObject<List<Section>>(result.ToString(Formatting.None));
+        }
+        public static int ExtractSection(List<Section> sectionsList, Model.PokemonSection sectionToFind)
+        {
+            int section;
+            switch (sectionToFind)
+            {
+            case Model.PokemonSection.Base:
+                section = 0;
+                break;
+            case Model.PokemonSection.Evolution:
+                section = int.Parse(sectionsList.First(p => p.anchor == "Evolution").index);
+                break;
+            default:
+                section = -1;
+                break;
+            }
+            return section;
+        }
+    }
+    public class Section
+    {
+        public int toclevel { get; set; }
+        public string level { get; set; }
+        public string line { get; set; }
+        public string number { get; set; }
+        public string index { get; set; }
+        public string fromtitle { get; set; }
+        public int byteoffset { get; set; }
+        public string anchor { get; set; }
     }
 }

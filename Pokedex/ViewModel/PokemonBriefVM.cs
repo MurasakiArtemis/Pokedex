@@ -54,7 +54,7 @@ namespace Pokedex.ViewModel
         }
         private IEnumerable<string> ExtractFullJsonData(string data)
         {
-            var replacedString = JsonDataExtractor.ExtractContent(data);
+            var replacedString = JsonDataExtractor.ExtractContent(data).Replace("\"", "").Replace("\\n", "");
             var semiParsedString = replacedString.Split(new string[] { "{{", "}}" }, StringSplitOptions.RemoveEmptyEntries);
             var pokemonDataEnumerable = semiParsedString.Where(p => p.StartsWith("rdex|"));
             return pokemonDataEnumerable;

@@ -102,7 +102,6 @@
     <Compile Include="Model\AbilitySlot.cs" />
     <Compile Include="Model\PokemonBrief.cs" />
     <Compile Include="Model\Generation.cs" />
-    <Compile Include="Model\KalosArea.cs" />
     <Compile Include="Model\Pokemon.cs" />
     <Compile Include="Model\Wrappers\MegaStonePicture.cs" />
     <Compile Include="Model\Wrappers\PaneIconDescription.cs" />

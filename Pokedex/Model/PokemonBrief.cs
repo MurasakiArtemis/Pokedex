@@ -74,7 +74,7 @@ namespace Pokedex.Model
                 }
             }
         }
-        public PokemonType PrimaryType { get { return Types.Where(p => p.Slot == TypeSlot.Primary).Single().Type; } }
+        public PokemonType PrimaryType { get { return Types.First(p => p.Slot == TypeSlot.Primary).Type; } }
 
         private ObservableCollection<SlotType> _types;
         public ObservableCollection<SlotType> Types

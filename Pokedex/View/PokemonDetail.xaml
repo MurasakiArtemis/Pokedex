@@ -67,6 +67,7 @@
                         <Setter Target="ExperienceYieldSection.(Grid.Row)" Value="4"/>
                         <Setter Target="BaseFriendshipSection.(Grid.Row)" Value="4"/>
                         <Setter Target="MegaStonesSection.(Grid.Row)" Value="5"/>
+                        <Setter Target="EvolutionSection.(Grid.Row)" Value="6"/>
 
                         <Setter Target="NameCategorySection.(Grid.Column)" Value="0"/>
                         <Setter Target="JapaneseNameSection.(Grid.Column)" Value="3"/>
@@ -128,6 +129,7 @@
                         <Setter Target="ExperienceYieldSection.(Grid.Row)" Value="4"/>
                         <Setter Target="BaseFriendshipSection.(Grid.Row)" Value="4"/>
                         <Setter Target="MegaStonesSection.(Grid.Row)" Value="5"/>
+                        <Setter Target="EvolutionSection.(Grid.Row)" Value="6"/>
 
                         <Setter Target="NameCategorySection.(Grid.Column)" Value="0"/>
                         <Setter Target="JapaneseNameSection.(Grid.Column)" Value="3"/>
@@ -169,7 +171,8 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ProgressBar IsIndeterminate="True" Visibility="{x:Bind PokemonVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
-        <ScrollViewer>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Text="An error occurred, Check your internet configuration and try again later &#x0a;If the error keeps occurring please leave details of the error" Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}" TextWrapping="WrapWholeWords"/>
+        <ScrollViewer Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
             <Grid x:Name="ExternalContainer" Background="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, Mode=OneWay}" Style="{StaticResource RoundedGridContainer}" Margin="12,0,12,0" Visibility="{x:Bind PokemonVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -186,6 +189,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -468,6 +472,16 @@
                     <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1">
                         <TextBlock Text="{x:Bind PokemonVM.CurrentPokemon.BaseFriendship}" TextAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
+                </Grid>
+            
+                <!--Evolution-->
+                <Grid x:Name="EvolutionSection" Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="12" Style="{StaticResource RoundedGridContainer}" Background="{x:Bind PokemonVM.CurrentPokemon.PrimaryForm.PrimaryType, Converter={StaticResource TypeColorConverter}, ConverterParameter=Lighter}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Evolutions" Style="{StaticResource BoldTextBlock}"/>
+                    <Border Style="{StaticResource WhitePropertyContainer}" Grid.Row="1"></Border>
                 </Grid>
             </Grid>
         </ScrollViewer>

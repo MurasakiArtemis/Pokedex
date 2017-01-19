@@ -43,6 +43,11 @@ namespace Pokedex.Model
             string resourceTypeString = GetResourceString(resourceType);
             return $"{GetResource("BulbapediaApiBaseUrl")}api.php?action=query&prop=revisions&titles={resource}{resourceTypeString}&rvprop=content&rvsection={section}&format=json";
         }
+        private static string BaseParseQuery(string resource, int section, ResourceType resourceType)
+        {
+            string resourceTypeString = GetResourceString(resourceType);
+            return $"{GetResource("BulbapediaApiBaseUrl")}api.php?action=parse&page={resource}{resourceTypeString}&prop=text&section={section}&format=json";
+        }
         private static string BaseSectionsQuery(string resource, ResourceType resourceType)
         {
             string resourceTypeString = GetResourceString(resourceType);
@@ -64,6 +69,10 @@ namespace Pokedex.Model
         public static string PokemonContentQuery(string pokemonName, int section)
         {
             return BaseContentQuery(pokemonName, section, ResourceType.Pokemon);
+        }
+        public static string PokemonParseQuery(string pokemonName, int section)
+        {
+            return BaseParseQuery(pokemonName, section, ResourceType.Pokemon);
         }
         public static string PokemonListQuery(Generation? generation = null)
         {

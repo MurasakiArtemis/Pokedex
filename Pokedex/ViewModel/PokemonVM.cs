@@ -12,20 +12,20 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace Pokedex.ViewModel
 {
     public class PokemonVM : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged = delegate
-        {
-        };
+        private Pokemon _currentPokemon;
+        private bool _isBusy;
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
         void RaiseProperty([CallerMemberName]string propertyName = "")
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private bool _isBusy;
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -38,8 +38,6 @@ namespace Pokedex.ViewModel
                 }
             }
         }
-
-        private Pokemon _currentPokemon;
         public Pokemon CurrentPokemon
         {
             get { return _currentPokemon; }
@@ -58,103 +56,99 @@ namespace Pokedex.ViewModel
         {
             HttpCommunication source = new HttpCommunication();
             IsBusy = true;
-            int section = 0;
-            if (pokemonName.StartsWith("Alolan"))
-                pokemonName.Remove(0, "Alolan".Length);
-            if(pokemonName.StartsWith("Mega"))
-                pokemonName.Remove(0, "Mega".Length);
-            string pokemonBaseData = await source.GetResponse(Model.UrlQueryBuilder.PokemonContentQuery(pokemonName, section));
-            Pokemon pokemon = await GetPokemonFromJson(pokemonBaseData);
-            CurrentPokemon = pokemon;
-            IsBusy = false;
-        }
-        private async Task<Pokemon> GetPokemonFromJson(string data)
-        {
-            string[] pokemonData = ExtractJsonData(data);
-            Func<string, string> extractionFunction = (attributeName) =>
+            try
             {
-                var pokemonDataSelection = pokemonData.Where(p => p.StartsWith($"{attributeName}=")).Select(p => p.Replace($"{attributeName}=", ""));
-                if (pokemonDataSelection.Count() > 0)
-                {
-                    return pokemonDataSelection.First();
-                }
-                return null;
-            };
-            var NationalDex = int.Parse(extractionFunction("ndex"));
-            var Name = extractionFunction("name");
+                if (pokemonName.StartsWith("Alolan"))
+                    pokemonName.Remove(0, "Alolan".Length);
+                if (pokemonName.StartsWith("Mega"))
+                    pokemonName.Remove(0, "Mega".Length);
+                string pokemonBaseData = await source.GetResponse(UrlQueryBuilder.PokemonContentQuery(pokemonName, 0));
+                CurrentPokemon = await GetPokemonFromJson(pokemonBaseData);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        private async Task<Pokemon> GetPokemonFromJson(string pokemonBaseData)
+        {
+            string[] pokemonData = ExtractInfoboxData(pokemonBaseData);
+            var nationalDex = int.Parse(ExtractionFunction(pokemonData, "ndex"));
+            var name = ExtractionFunction(pokemonData, "name");
             int formsNumber;
-            if (!int.TryParse(extractionFunction("forme"), out formsNumber))
+            if (!int.TryParse(ExtractionFunction(pokemonData, "forme"), out formsNumber))
                 formsNumber = 1;
             int typesNumber;
-            if (!int.TryParse(extractionFunction("typebox"), out typesNumber))
+            if (!int.TryParse(ExtractionFunction(pokemonData, "typebox"), out typesNumber))
                 typesNumber = 2;
-            var taskForms = ExtractForms(extractionFunction, typesNumber, formsNumber, Name, NationalDex);
-            var JapaneseName = extractionFunction("jname");
-            var JapaneseTransliteration = extractionFunction("jtranslit");
-            var JapaneseRomanizedName = extractionFunction("tmname");
-            var RegionsAndNumbers = ExtractRegionsAndNumbers(extractionFunction);
-            var Category = extractionFunction("category");
+            var taskForms = ExtractForms(pokemonData, typesNumber, formsNumber, name, nationalDex);
+            var japaneseName = ExtractionFunction(pokemonData, "jname");
+            var japaneseTransliteration = ExtractionFunction(pokemonData, "jtranslit");
+            var japaneseRomanizedName = ExtractionFunction(pokemonData, "tmname");
+            var regionsAndNumbers = ExtractRegionsAndNumbers(pokemonData);
+            var category = ExtractionFunction(pokemonData, "category");
             bool hasMega;
-            var MegaStones = ExtractMegaStones(extractionFunction, formsNumber, out hasMega);
-            int eggGroupNumber = int.Parse(extractionFunction("egggroupn"));
-            var EggGroups = ExtractEggGroups(extractionFunction, eggGroupNumber);
-            var HatchTime = int.Parse(extractionFunction("eggcycles")) * 257;
-            var ExperienceYield = int.Parse(extractionFunction("expyield"));
-            var temporalGenderCode = double.Parse(extractionFunction("gendercode"));
-            var GenderCode = temporalGenderCode == 255? -1 : temporalGenderCode / 254;
-            var CatchRate = int.Parse(extractionFunction("catchrate"));
-            var IntroducedGeneration = (Generation)Enum.GetValues(typeof(Generation)).GetValue(int.Parse(extractionFunction("generation")) - 1);
-            var BaseFriendship = int.Parse(extractionFunction("friendship"));
-            var URL = UrlQueryBuilder.PokemonUrlQuery(Name);
-            var Forms = await taskForms;
-            return new Pokemon() { NationalDex = NationalDex, Name = Name, JapaneseName = JapaneseName, JapaneseTransliteration = JapaneseTransliteration,
-                JapaneseRomanizedName = JapaneseRomanizedName, RegionsAndNumbers = RegionsAndNumbers, Category = Category, Forms = Forms, HasMega = hasMega,
-                MegaStones = MegaStones, EggGroups = EggGroups, HatchTime = HatchTime, ExperienceYield = ExperienceYield, GenderCode = GenderCode,
-                CatchRate = CatchRate, IntroducedGeneration = IntroducedGeneration, BaseFriendship = BaseFriendship, URL = URL};
+            var megaStones = ExtractMegaStones(pokemonData, formsNumber, out hasMega);
+            int eggGroupNumber = int.Parse(ExtractionFunction(pokemonData, "egggroupn"));
+            var eggGroups = ExtractEggGroups(pokemonData, eggGroupNumber);
+            var hatchTime = int.Parse(ExtractionFunction(pokemonData, "eggcycles")) * 257;
+            var experienceYield = int.Parse(ExtractionFunction(pokemonData, "expyield"));
+            var temporalGenderCode = double.Parse(ExtractionFunction(pokemonData, "gendercode"));
+            var genderCode = temporalGenderCode == 255? -1 : temporalGenderCode / 254;
+            var catchRate = int.Parse(ExtractionFunction(pokemonData, "catchrate"));
+            var introducedGeneration = (Generation)Enum.GetValues(typeof(Generation)).GetValue(int.Parse(ExtractionFunction(pokemonData, "generation")) - 1);
+            var baseFriendship = int.Parse(ExtractionFunction(pokemonData, "friendship"));
+            var URL = UrlQueryBuilder.PokemonUrlQuery(name);
+            var forms = await taskForms;
+            return new Pokemon() { NationalDex = nationalDex, Name = name, JapaneseName = japaneseName, JapaneseTransliteration = japaneseTransliteration,
+                JapaneseRomanizedName = japaneseRomanizedName, RegionsAndNumbers = regionsAndNumbers, Category = category, Forms = forms, HasMega = hasMega,
+                MegaStones = megaStones, EggGroups = eggGroups, HatchTime = hatchTime, ExperienceYield = experienceYield, GenderCode = genderCode,
+                CatchRate = catchRate, IntroducedGeneration = introducedGeneration, BaseFriendship = baseFriendship, URL = URL};
         }
-        private async Task<ObservableCollection<Form>> ExtractForms(Func<string, string> extractionFunction, int typesAmount, int formsAmount, string name, int nationalDex)
+        private async Task<ObservableCollection<Form>> ExtractForms(string[] pokemonData, int typesAmount, int formsAmount, string name, int nationalDex)
         {
             var forms = new ObservableCollection<Form>();
             for (int i = 1; i <= formsAmount; i++)
             {
-                var temporalNameResult = ExtractFormName(extractionFunction, i, name);
-                var temporalImageRelativeLinkResult = ExtractFormPicture(extractionFunction, i, name, nationalDex);
-                var client = new HttpCommunication();
-                var linkData = await client.GetResponse(UrlQueryBuilder.BasePictureLocationQuery(temporalImageRelativeLinkResult));
-                var dataString = JsonDataExtractor.ExtractPictureUrl(linkData);
-                var imageUri = new Uri(dataString);
-                var temporalImageResult = new BitmapImage(imageUri);
-                var heightResult = ExtractFormHeight(extractionFunction, i, ref forms);
-                var weightResult = ExtractFormWeight(extractionFunction, i, ref forms);
-                var Types = ExtractFormTypes(extractionFunction, typesAmount, i, ref forms);
-                var Abilities = ExtractFormAbilities(extractionFunction, i, temporalNameResult, ref forms);
+                var temporalNameResult = ExtractFormName(pokemonData, i, name);
+                var temporalImageRelativeLinkResult = ExtractFormPicture(pokemonData, i, name, nationalDex);
+                var taskImage = ExtractPictureAsync(temporalImageRelativeLinkResult);
+                var heightResult = ExtractFormHeight(pokemonData, i, forms);
+                var weightResult = ExtractFormWeight(pokemonData, i, forms);
+                var Types = ExtractFormTypes(pokemonData, typesAmount, i, forms);
+                var Abilities = ExtractFormAbilities(pokemonData, i, temporalNameResult, forms);
+                var temporalImageResult = await taskImage;
                 var formResult = new Form() { Name = temporalNameResult, ImageRelativeLink = temporalImageRelativeLinkResult, Image = temporalImageResult,
                     Types = Types, Height = heightResult, Weight = weightResult, Abilities = Abilities };
                 forms.Add(formResult);
             }
             return forms;
         }
-        private string ExtractFormName(Func<string, string> extractionFunction, int formNumber, string name)
+        private string ExtractFormName(string[] pokemonData, int formNumber, string name)
         {
-            string temporalFormResult = extractionFunction($"form{formNumber}");
+            string temporalFormResult = ExtractionFunction(pokemonData, $"form{formNumber}");
             if (string.IsNullOrEmpty(temporalFormResult))
                 temporalFormResult = name;
             return temporalFormResult;
         }
-        private string ExtractFormPicture(Func<string, string> extractionFunction, int formNumber, string name, int nationalDex)
+        private string ExtractFormPicture(string[] pokemonData, int formNumber, string name, int nationalDex)
         {
-            string temporalPictureResult = extractionFunction($"image{formNumber}");
+            string temporalPictureResult = ExtractionFunction(pokemonData, $"image{formNumber}");
             if (string.IsNullOrEmpty(temporalPictureResult))
                 temporalPictureResult = $"{nationalDex.ToString("D3")}{name}.png";
             return $"File:{temporalPictureResult}";
         }
-        private ObservableCollection<SlotType> ExtractFormTypes(Func<string, string> extractionFunction, int typesAmount, int formNumber, ref ObservableCollection<Form> Forms)
+        private ObservableCollection<SlotType> ExtractFormTypes(string[] pokemonData, int typesAmount, int formNumber, ObservableCollection<Form> Forms)
         {
             var types = new ObservableCollection<SlotType>();
             bool requiresBase = true;
             for (int j = 1; j <= typesAmount; j++)
             {
-                string temporalTypeResult = extractionFunction($"{(formNumber != 1 ? $"form{formNumber}" : "")}type{j}");
+                string temporalTypeResult = ExtractionFunction(pokemonData, $"{(formNumber != 1 ? $"form{formNumber}" : "")}type{j}");
                 if (string.IsNullOrEmpty(temporalTypeResult))
                     temporalTypeResult = "None";
                 PokemonType result = (PokemonType)Enum.Parse(typeof(PokemonType), temporalTypeResult);
@@ -170,10 +164,10 @@ namespace Pokedex.ViewModel
             }
             return types;
         }
-        private double ExtractFormWeight(Func<string, string> extractionFunction, int formNumber, ref ObservableCollection<Form> Forms)
+        private double ExtractFormWeight(string[] pokemonData, int formNumber, ObservableCollection<Form> Forms)
         {
             double weightResult;
-            string temporalWeightResult = extractionFunction($"weight-kg{(formNumber != 1 ? $"{formNumber}" : "")}");
+            string temporalWeightResult = ExtractionFunction(pokemonData, $"weight-kg{(formNumber != 1 ? $"{formNumber}" : "")}");
             if (string.IsNullOrEmpty(temporalWeightResult))
                 temporalWeightResult = "0.0";
             weightResult = double.Parse(temporalWeightResult);
@@ -181,10 +175,10 @@ namespace Pokedex.ViewModel
                 weightResult = Forms.First().Weight;
             return weightResult;
         }
-        private double ExtractFormHeight(Func<string, string> extractionFunction, int formNumber, ref ObservableCollection<Form> Forms)
+        private double ExtractFormHeight(string[] pokemonData, int formNumber, ObservableCollection<Form> Forms)
         {
             double heightResult;
-            string temporalHeightResult = extractionFunction($"height-m{(formNumber != 1 ? $"{formNumber}" : "")}");
+            string temporalHeightResult = ExtractionFunction(pokemonData, $"height-m{(formNumber != 1 ? $"{formNumber}" : "")}");
             if (string.IsNullOrEmpty(temporalHeightResult))
                 temporalHeightResult = "0.0";
             heightResult = double.Parse(temporalHeightResult);
@@ -192,13 +186,13 @@ namespace Pokedex.ViewModel
                 heightResult = Forms.First().Height;
             return heightResult;
         }
-        private ObservableCollection<AbilityName> ExtractFormAbilities(Func<string, string> extractionFunction, int formNumber, string temporalFormResult, ref ObservableCollection<Form> Forms)
+        private ObservableCollection<AbilityName> ExtractFormAbilities(string[] pokemonData, int formNumber, string temporalFormResult, ObservableCollection<Form> Forms)
         {
             string temporalAbilityResult;
             var Abilities = new ObservableCollection<AbilityName>();
             if (temporalFormResult.Contains("Mega"))
             {
-                temporalAbilityResult = extractionFunction("abilitym");
+                temporalAbilityResult = ExtractionFunction(pokemonData, "abilitym");
                 if (!string.IsNullOrEmpty(temporalAbilityResult))
                     Abilities.Add(new AbilityName() { AbilitySlot = AbilitySlot.Mega, Name = temporalAbilityResult });
             }
@@ -209,13 +203,13 @@ namespace Pokedex.ViewModel
                     switch (abilitySlot)
                     {
                     case AbilitySlot.First:
-                        temporalAbilityResult = extractionFunction($"ability{(formNumber != 1 ? $"{formNumber}-" : "")}1");
+                        temporalAbilityResult = ExtractionFunction(pokemonData, $"ability{(formNumber != 1 ? $"{formNumber}-" : "")}1");
                         break;
                     case AbilitySlot.Second:
-                        temporalAbilityResult = extractionFunction($"ability{(formNumber != 1 ? $"{formNumber}-" : "")}2");
+                        temporalAbilityResult = ExtractionFunction(pokemonData, $"ability{(formNumber != 1 ? $"{formNumber}-" : "")}2");
                         break;
                     case AbilitySlot.Hidden:
-                        temporalAbilityResult = extractionFunction($"abilityd{(formNumber != 1 ? $"{formNumber}" : "")}");
+                        temporalAbilityResult = ExtractionFunction(pokemonData, $"abilityd{(formNumber != 1 ? $"{formNumber}" : "")}");
                         break;
                     default:
                         temporalAbilityResult = "";
@@ -233,13 +227,13 @@ namespace Pokedex.ViewModel
             }
             return Abilities;
         }
-        private ObservableCollection<MegaStonePicture> ExtractMegaStones(Func<string, string> extractionFunction, int formsNumber, out bool hasMega)
+        private ObservableCollection<MegaStonePicture> ExtractMegaStones(string[] pokemonData, int formsNumber, out bool hasMega)
         {
             var megaStones = new ObservableCollection<MegaStonePicture>();
             hasMega = false;
             for (int i = 1; i <= formsNumber; i++)
             {
-                string megaStoneName = extractionFunction($"mega{(i != 1 ? $"{i}" : "")}");
+                string megaStoneName = ExtractionFunction(pokemonData, $"mega{(i != 1 ? $"{i}" : "")}");
                 if (!string.IsNullOrEmpty(megaStoneName))
                 {
                     hasMega = true;
@@ -254,16 +248,16 @@ namespace Pokedex.ViewModel
             }
             return megaStones;
         }
-        private ObservableCollection<string> ExtractEggGroups(Func<string, string> extractionFunction, int eggGroupNumber)
+        private ObservableCollection<string> ExtractEggGroups(string[] pokemonData, int eggGroupNumber)
         {
             var eggGroups = new ObservableCollection<string>();
             for (int i = 1; i <= eggGroupNumber; i++)
-                eggGroups.Add(extractionFunction($"egggroup{i}"));
+                eggGroups.Add(ExtractionFunction(pokemonData, $"egggroup{i}"));
             if(eggGroupNumber == 0)
                 eggGroups.Add("Undiscovered");
             return eggGroups;
         }
-        private ObservableCollection<RegionNumber> ExtractRegionsAndNumbers(Func<string, string> extractionFunction)
+        private ObservableCollection<RegionNumber> ExtractRegionsAndNumbers(string[] pokemonData)
         {
             var regionsAndNumbers = new ObservableCollection<RegionNumber>();
             foreach (Region region in Enum.GetValues(typeof(Region)))
@@ -272,36 +266,36 @@ namespace Pokedex.ViewModel
                 switch (region)
                 {
                 case Region.Kanto:
-                    temporalResult = extractionFunction("ndex");
+                    temporalResult = ExtractionFunction(pokemonData, "ndex");
                     break;
                 case Region.Johto:
-                    temporalResult = extractionFunction("jdex");
+                    temporalResult = ExtractionFunction(pokemonData, "jdex");
                     break;
                 case Region.Hoenn:
-                    temporalResult = extractionFunction("hdex");
+                    temporalResult = ExtractionFunction(pokemonData, "hdex");
                     break;
                 case Region.Sinnoh:
-                    temporalResult = extractionFunction("sdex");
+                    temporalResult = ExtractionFunction(pokemonData, "sdex");
                     break;
                 case Region.Unova:
-                    temporalResult = extractionFunction("udex");
+                    temporalResult = ExtractionFunction(pokemonData, "udex");
                     break;
                 case Region.NewUnova:
-                    temporalResult = extractionFunction("u2dex");
+                    temporalResult = ExtractionFunction(pokemonData, "u2dex");
                     break;
                 case Region.CentralKalos:
                 case Region.CoastalKalos:
                 case Region.MountainKalos:
                     {
-                        string area = extractionFunction("karea");
+                        string area = ExtractionFunction(pokemonData, "karea");
                         if (area == region.ToString().Replace("Kalos", ""))
-                            temporalResult = extractionFunction("kdex");
+                            temporalResult = ExtractionFunction(pokemonData, "kdex");
                         else
                             temporalResult = "";
                     }
                     break;
                 case Region.Alola:
-                    temporalResult = extractionFunction("adex");
+                    temporalResult = ExtractionFunction(pokemonData, "adex");
                     break;
                 default:
                     temporalResult = "";
@@ -312,14 +306,28 @@ namespace Pokedex.ViewModel
             }
             return regionsAndNumbers;
         }
-        private string[] ExtractJsonData(string data)
+        private string ExtractionFunction(string[] data, string attributeName)
         {
-            var replacedString = JsonDataExtractor.ExtractContent(data);
-            replacedString = replacedString.Replace("{{tt|", "");           
-            string pokemonDataString = replacedString.Split(new string[] { "}}{{", "}}|}", "}}'" }, System.StringSplitOptions.RemoveEmptyEntries).Where(p => p.Contains("Infobox")).Single();
+            var pokemonDataSelection = data.FirstOrDefault(p => p.StartsWith($"{attributeName}="));
+            if (!string.IsNullOrEmpty(pokemonDataSelection))
+                return pokemonDataSelection.Replace($"{attributeName}=", "");
+            return null;
+        }
+        private string[] ExtractInfoboxData(string data)
+        {
+            var replacedString = JsonDataExtractor.ExtractContent(data).Replace("\"", "").Replace("\\n", "");
+            replacedString = replacedString.Replace("{{tt|", "");
+            string pokemonDataString = replacedString.Split(new string[] { "}}{{", "}}|}", "}}'" }, System.StringSplitOptions.RemoveEmptyEntries).First(p => p.Contains("Infobox"));
             string[] pokemonData = pokemonDataString.Split('|', '<', '>');
             return pokemonData;
         }
-
+        private async Task<BitmapImage> ExtractPictureAsync(string relativeLink)
+        {
+            var client = new HttpCommunication();
+            var linkData = await client.GetResponse(UrlQueryBuilder.BasePictureLocationQuery(relativeLink));
+            var imageLink = JsonDataExtractor.ExtractPictureUrl(linkData);
+            var imageUri = new Uri(imageLink);
+            return new BitmapImage(imageUri);
+        }
     }
 }

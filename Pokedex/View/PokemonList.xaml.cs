@@ -22,13 +22,21 @@ namespace Pokedex.View
 {
     public sealed partial class PokemonList : Page
     {
-        public ViewModel.PokemonBriefVM PokemonBriefVM { get; set; }
+        private ViewModel.PokemonBriefVM PokemonBriefVM { get; set; }
         public IEnumerable<string> ContentList { get { return PokemonBriefVM.DataList; } }
         public Frame NavigableFrame { get { return VisualStates.CurrentState == StackedLayout ? Frame : DetailsFrame; } }
+        public bool IsError { get; set; }
         public PokemonList()
         {
             this.InitializeComponent();
-            PokemonBriefVM = new ViewModel.PokemonBriefVM();
+            try
+            {
+                PokemonBriefVM = new ViewModel.PokemonBriefVM();
+            }
+            catch(Exception)
+            {
+                IsError = true;
+            }
             this.DataContext = PokemonBriefVM;
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
         }

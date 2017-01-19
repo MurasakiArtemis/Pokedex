@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using Pokedex.Model.Wrappers;
 
 namespace Pokedex.Model
-{//Use Observable Collection instead of array
+{
     public class Pokemon : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate
@@ -258,6 +258,20 @@ namespace Pokedex.Model
                 if (value != _baseFriendship)
                 {
                     _baseFriendship = value;
+                    RaiseProperty();
+                }
+            }
+        }
+
+        private ObservableCollection<EvolutionLink> _evolutions;
+        public ObservableCollection<EvolutionLink> Evolutions
+        {
+            get { return _evolutions; }
+            set
+            {
+                if (value != _evolutions)
+                {
+                    _evolutions = value;
                     RaiseProperty();
                 }
             }

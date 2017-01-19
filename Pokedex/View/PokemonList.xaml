@@ -42,14 +42,12 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="MasterColumn" Width="Auto"/>
             <ColumnDefinition x:Name="DetailsColumn" Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListView ShowsScrollingPlaceholders="True" x:Name="MasterList" Grid.Column="0" ItemClick="ListView_ItemClick" ItemsSource="{x:Bind PokemonBriefVM.PokemonBriefList}" IsItemClickEnabled="True" HorizontalAlignment="Stretch">
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="An error occurred, Check your internet configuration and try again later" Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
+        <ListView x:Name="MasterList" Grid.Column="0" ShowsScrollingPlaceholders="True" ItemClick="ListView_ItemClick" ItemsSource="{x:Bind PokemonBriefVM.PokemonBriefList, Mode=OneWay}" IsItemClickEnabled="True" HorizontalAlignment="Stretch" Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:PokemonBrief">
                     <Border BorderThickness="{StaticResource InternalMargin}" BorderBrush="{x:Bind PrimaryType, Converter={StaticResource TypeColorConverter}}" Margin="{StaticResource InternalMargin}" CornerRadius="8" Background="Transparent">
@@ -71,7 +69,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Frame x:Name="DetailsFrame" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
+        <Frame x:Name="DetailsFrame" Grid.Column="1" Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
             <TextBlock Text="Select an option from the menu" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Frame>
     </Grid>
