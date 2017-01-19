@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Communication\HttpCommunication.cs" />
     <Compile Include="Model\Form.cs" />
+    <Compile Include="Model\ItemBrief.cs" />
     <Compile Include="Model\PokemonSection.cs" />
     <Compile Include="Model\ResourceType.cs" />
     <Compile Include="Model\Wrappers\AbilityName.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="ViewModel\IContentList.cs" />
     <Compile Include="ViewModel\INavigableFrame.cs" />
     <Compile Include="ViewModel\IncrementalLoadingCollection.cs" />
+    <Compile Include="ViewModel\ItemBriefVM.cs" />
     <Compile Include="ViewModel\JsonDataExtractor.cs" />
     <Compile Include="ViewModel\UrlQueryBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,6 +129,9 @@
     <Compile Include="View\Converters\StringImageSourceConverter.cs" />
     <Compile Include="View\Converters\StringVisibilityConverter.cs" />
     <Compile Include="View\Converters\TypeColorConverter.cs" />
+    <Compile Include="View\ItemList.xaml.cs">
+      <DependentUpon>ItemList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -180,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\ItemList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
