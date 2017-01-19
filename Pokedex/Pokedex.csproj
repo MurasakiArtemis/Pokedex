@@ -111,6 +111,8 @@
     <Compile Include="Model\Region.cs" />
     <Compile Include="Model\Wrappers\RegionNumber.cs" />
     <Compile Include="Model\TypeSlot.cs" />
+    <Compile Include="ViewModel\IContentList.cs" />
+    <Compile Include="ViewModel\INavigableFrame.cs" />
     <Compile Include="ViewModel\IncrementalLoadingCollection.cs" />
     <Compile Include="ViewModel\JsonDataExtractor.cs" />
     <Compile Include="ViewModel\UrlQueryBuilder.cs" />

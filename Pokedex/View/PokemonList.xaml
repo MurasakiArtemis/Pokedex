@@ -40,7 +40,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <ProgressBar IsIndeterminate="True" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{x:Bind PokemonBriefVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
+        <ProgressBar IsIndeterminate="True" Visibility="{x:Bind PokemonBriefVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="An error occurred, Check your internet configuration and try again later" Visibility="{x:Bind PokemonBriefVM.IsError, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
         <Grid Visibility="{x:Bind PokemonBriefVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
             <Grid.ColumnDefinitions>

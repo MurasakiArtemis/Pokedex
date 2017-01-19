@@ -1,4 +1,5 @@
 ﻿using Pokedex.Model;
+using Pokedex.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,7 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Pokedex.View
 {
-    public sealed partial class PokemonList : Page
+    public sealed partial class PokemonList : Page, INavigableFrame, IContentList
     {
         public IEnumerable<string> ContentList { get { return PokemonBriefVM.DataList; } }
         public Frame NavigableFrame { get { return VisualStates.CurrentState == StackedLayout ? Frame : DetailsFrame; } }
