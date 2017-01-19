@@ -1,7 +1,6 @@
 ﻿using Pokedex.Model;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Net.Http;
 using Pokedex.Communication;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Media.Imaging;
@@ -9,24 +8,21 @@ using Pokedex.View.Converters;
 using System;
 using Pokedex.Model.Wrappers;
 using System.Linq;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
 
 namespace Pokedex.ViewModel
 {
     public class PokemonVM : INotifyPropertyChanged
     {
         private Pokemon _currentPokemon;
-        private bool _isBusy;
-        private bool _isError;
+
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         void RaiseProperty([CallerMemberName]string propertyName = "")
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private bool _isBusy;
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -39,6 +35,8 @@ namespace Pokedex.ViewModel
                 }
             }
         }
+
+        private bool _isError;
         public bool IsError
         {
             get { return _isError; }

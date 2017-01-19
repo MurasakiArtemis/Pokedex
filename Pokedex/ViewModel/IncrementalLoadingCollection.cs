@@ -1,14 +1,11 @@
 ﻿using Pokedex.Communication;
 using Pokedex.Model;
 using Pokedex.Model.Wrappers;
-using Pokedex.View.Converters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Data;
