@@ -13,9 +13,7 @@
 
     <Page.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
+            <vm:PokemonBriefVM x:Key="PokemonBriefVM" x:Name="PokemonBriefVM"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -42,35 +40,38 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="MasterColumn" Width="Auto"/>
-            <ColumnDefinition x:Name="DetailsColumn" Width="*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="An error occurred, Check your internet configuration and try again later" Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
-        <ListView x:Name="MasterList" Grid.Column="0" ShowsScrollingPlaceholders="True" ItemClick="ListView_ItemClick" ItemsSource="{x:Bind PokemonBriefVM.PokemonBriefList, Mode=OneWay}" IsItemClickEnabled="True" HorizontalAlignment="Stretch" Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="model:PokemonBrief">
-                    <Border BorderThickness="{StaticResource InternalMargin}" BorderBrush="{x:Bind PrimaryType, Converter={StaticResource TypeColorConverter}}" Margin="{StaticResource InternalMargin}" CornerRadius="8" Background="Transparent">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Background="Transparent">
-                            <TextBlock VerticalAlignment="Center" Text="{x:Bind NationalDex, Converter={StaticResource StringFormatter}, ConverterParameter=PokemonListNumber}" Margin="{StaticResource InternalMargin}"/>
-                            <Image VerticalAlignment="Center" Source="{x:Bind Image}" Margin="{StaticResource InternalMargin}" x:Phase="3"/>
-                            <TextBlock VerticalAlignment="Center" Text="{x:Bind Name}" Margin="{StaticResource InternalMargin}" Width="100" x:Phase="1"/>
-                            <ListView VerticalAlignment="Center" Background="Transparent" ItemsSource="{x:Bind Types}" Margin="{StaticResource InternalMargin}" x:Phase="2" IsItemClickEnabled="False" SelectionMode="None">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate x:DataType="wrappers:SlotType">
-                                        <Border Style="{StaticResource TypeContainer}" Background="{x:Bind Type, Converter={StaticResource TypeColorConverter}}">
-                                            <TextBlock TextAlignment="Center" Foreground="White" Text="{x:Bind Type}"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <Frame x:Name="DetailsFrame" Grid.Column="1" Visibility="{x:Bind IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
-            <TextBlock Text="Select an option from the menu" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        </Frame>
+        <ProgressBar IsIndeterminate="True" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{x:Bind PokemonBriefVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="An error occurred, Check your internet configuration and try again later" Visibility="{x:Bind PokemonBriefVM.IsError, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
+        <Grid Visibility="{x:Bind PokemonBriefVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="MasterColumn" Width="Auto"/>
+                <ColumnDefinition x:Name="DetailsColumn" Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="MasterList" Grid.Column="0" ShowsScrollingPlaceholders="True" ItemClick="ListView_ItemClick" ItemsSource="{x:Bind PokemonBriefVM.PokemonBriefList, Mode=OneWay}" IsItemClickEnabled="True" HorizontalAlignment="Stretch" Visibility="{x:Bind PokemonBriefVM.IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:PokemonBrief">
+                        <Border BorderThickness="{StaticResource InternalMargin}" BorderBrush="{x:Bind PrimaryType, Converter={StaticResource TypeColorConverter}}" Margin="{StaticResource InternalMargin}" CornerRadius="8" Background="Transparent">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Background="Transparent">
+                                <TextBlock VerticalAlignment="Center" Text="{x:Bind NationalDex, Converter={StaticResource StringFormatter}, ConverterParameter=PokemonListNumber}" Margin="{StaticResource InternalMargin}"/>
+                                <Image VerticalAlignment="Center" Source="{x:Bind Image}" Margin="{StaticResource InternalMargin}" x:Phase="3"/>
+                                <TextBlock VerticalAlignment="Center" Text="{x:Bind Name}" Margin="{StaticResource InternalMargin}" Width="100" x:Phase="1"/>
+                                <ListView VerticalAlignment="Center" Background="Transparent" ItemsSource="{x:Bind Types}" Margin="{StaticResource InternalMargin}" x:Phase="2" IsItemClickEnabled="False" SelectionMode="None">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="wrappers:SlotType">
+                                            <Border Style="{StaticResource TypeContainer}" Background="{x:Bind Type, Converter={StaticResource TypeColorConverter}}">
+                                                <TextBlock TextAlignment="Center" Foreground="White" Text="{x:Bind Type}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Frame x:Name="DetailsFrame" Grid.Column="1" Visibility="{x:Bind PokemonBriefVM.IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
+                <TextBlock Text="Select an option from the menu" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Frame>
+        </Grid>
     </Grid>
 </Page>

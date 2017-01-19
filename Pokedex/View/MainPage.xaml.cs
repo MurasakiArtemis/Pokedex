@@ -75,7 +75,9 @@ namespace Pokedex.View
         }
         private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            if (dataList == null)
+                PopulateQueryList();
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 if (!string.IsNullOrEmpty(sender.Text))
                 {
@@ -89,7 +91,9 @@ namespace Pokedex.View
         }
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if(!string.IsNullOrEmpty(args.QueryText))
+            if (dataList == null)
+                PopulateQueryList();
+            if (!string.IsNullOrEmpty(args.QueryText))
             {
                 var query = args.QueryText.ToLowerInvariant();
                 query = char.ToUpper(query[0]) + query.Substring(1);
@@ -106,8 +110,11 @@ namespace Pokedex.View
                 }
             }
         }
-
         private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            PopulateQueryList();
+        }
+        private void PopulateQueryList()
         {
             if (ContentFrame.Content is PokemonList)
             {

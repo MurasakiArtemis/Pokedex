@@ -22,29 +22,24 @@ namespace Pokedex.View
 {
     public sealed partial class PokemonList : Page
     {
-        private ViewModel.PokemonBriefVM PokemonBriefVM { get; set; }
         public IEnumerable<string> ContentList { get { return PokemonBriefVM.DataList; } }
         public Frame NavigableFrame { get { return VisualStates.CurrentState == StackedLayout ? Frame : DetailsFrame; } }
-        public bool IsError { get; set; }
         public PokemonList()
         {
             this.InitializeComponent();
-            try
-            {
-                PokemonBriefVM = new ViewModel.PokemonBriefVM();
-            }
-            catch(Exception)
-            {
-                IsError = true;
-            }
-            this.DataContext = PokemonBriefVM;
-            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            LoadInformation();
+            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+        }
+        private async void LoadInformation()
+        {
+            await PokemonBriefVM.GetPokemonList();
+            Bindings.Update();
         }
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
         {

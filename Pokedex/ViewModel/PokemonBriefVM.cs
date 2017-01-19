@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Pokedex.ViewModel
 {
@@ -18,6 +19,34 @@ namespace Pokedex.ViewModel
         }
 
         private IEnumerable<string> PokemonCompleteListData;
+
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            private set
+            {
+                if (value != _isBusy)
+                {
+                    _isBusy = value;
+                    RaiseProperty();
+                }
+            }
+        }
+
+        private bool _isError;
+        public bool IsError
+        {
+            get { return _isError; }
+            set
+            {
+                if (value != _isError)
+                {
+                    _isError = value;
+                    RaiseProperty();
+                }
+            }
+        }
 
         private IncrementalLoadingCollection _pokemonBriefList;
         public IncrementalLoadingCollection PokemonBriefList
@@ -32,7 +61,7 @@ namespace Pokedex.ViewModel
                 }
             }
         }
-        public IEnumerable<string> DataList { get { return PokemonCompleteListData.Select(p => p.Split('|').ElementAt(3)); } }
+        public IEnumerable<string> DataList { get { return PokemonCompleteListData != null? PokemonCompleteListData.Select(p => p.Split('|').ElementAt(3)) : null; } }
 
         private int _lastPokemonDex;
         public int LastPokemonDex
@@ -48,10 +77,7 @@ namespace Pokedex.ViewModel
             }
         }
         public PokemonBriefVM()
-        {
-            GetPokemonList();
-            PokemonBriefList = new IncrementalLoadingCollection(LastPokemonDex, PokemonCompleteListData);
-        }
+        { }
         private IEnumerable<string> ExtractFullJsonData(string data)
         {
             var replacedString = JsonDataExtractor.ExtractContent(data).Replace("\"", "").Replace("\\n", "");
@@ -59,16 +85,29 @@ namespace Pokedex.ViewModel
             var pokemonDataEnumerable = semiParsedString.Where(p => p.StartsWith("rdex|"));
             return pokemonDataEnumerable;
         }
-        private void GetPokemonList()
+        public async Task GetPokemonList()
         {
             HttpCommunication source = new HttpCommunication();
-            string urlQuery = UrlQueryBuilder.PokemonListQuery();
-            string pokemonListBaseData = source.GetResponse(urlQuery).Result;
-            PokemonCompleteListData = ExtractFullJsonData(pokemonListBaseData);
-            var numberOfPokemon = PokemonCompleteListData.Count();
-            var lastPokemonData = PokemonCompleteListData.ElementAt(numberOfPokemon - 1);
-            var splitedString = lastPokemonData.Split('|');
-            LastPokemonDex = int.Parse(Regex.Replace(splitedString.ElementAt(2), "[A-Za-z ]", ""));
+            IsBusy = true;
+            try
+            {
+                string urlQuery = UrlQueryBuilder.PokemonListQuery();
+                string pokemonListBaseData = await source.GetResponse(urlQuery);
+                PokemonCompleteListData = ExtractFullJsonData(pokemonListBaseData);
+                var numberOfPokemon = PokemonCompleteListData.Count();
+                var lastPokemonData = PokemonCompleteListData.ElementAt(numberOfPokemon - 1);
+                var splitedString = lastPokemonData.Split('|');
+                LastPokemonDex = int.Parse(Regex.Replace(splitedString.ElementAt(2), "[A-Za-z ]", ""));
+                PokemonBriefList = new IncrementalLoadingCollection(LastPokemonDex, PokemonCompleteListData);
+            }
+            catch
+            {
+                IsError = true;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }
