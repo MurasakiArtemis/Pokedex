@@ -98,6 +98,7 @@
     <Compile Include="Communication\HttpCommunication.cs" />
     <Compile Include="Model\Form.cs" />
     <Compile Include="Model\ItemBrief.cs" />
+    <Compile Include="Model\Pocket.cs" />
     <Compile Include="Model\PokemonSection.cs" />
     <Compile Include="Model\ResourceType.cs" />
     <Compile Include="Model\Wrappers\AbilityName.cs" />
@@ -123,8 +124,10 @@
     <Compile Include="ViewModel\PokemonVM.cs" />
     <Compile Include="View\Converters\AbilitySlotVisibilityConverter.cs" />
     <Compile Include="View\Converters\BooleanVisibilityConverter.cs" />
+    <Compile Include="View\Converters\ColourModifier.cs" />
     <Compile Include="View\Converters\DoubleBrushConverter.cs" />
     <Compile Include="View\Converters\FrameStringConverter.cs" />
+    <Compile Include="View\Converters\PocketColorConverter.cs" />
     <Compile Include="View\Converters\StringFormatter.cs" />
     <Compile Include="View\Converters\StringImageSourceConverter.cs" />
     <Compile Include="View\Converters\StringVisibilityConverter.cs" />

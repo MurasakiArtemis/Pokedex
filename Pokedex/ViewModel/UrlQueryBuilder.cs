@@ -95,6 +95,38 @@
             }
             return BaseContentQuery("List_of_Pokémon_by_National_Pokédex_number", section, ResourceType.Miscellaneous);
         }
+        public static string ItemListQuery(Generation generation)
+        {
+            string resourceName;
+            switch (generation)
+            {
+            case Generation.First:
+                resourceName = "List_of_items_by_index_number_(Generation_I)";
+                break;
+            case Generation.Second:
+                resourceName = "List_of_items_by_index_number_(Generation_II)";
+                break;
+            case Generation.Third:
+                resourceName = "List_of_items_by_index_number_(Generation_III)";
+                break;
+            case Generation.Fourth:
+                resourceName = "List_of_items_by_index_number_(Generation_IV)";
+                break;
+            case Generation.Fifth:
+                resourceName = "List_of_items_by_index_number_(Generation_V)";
+                break;
+            case Generation.Sixth:
+                resourceName = "List_of_items_by_index_number_(Generation_VI)";
+                break;
+            case Generation.Seventh:
+                resourceName = "List_of_items_by_index_number_(Generation_VII)";
+                break;
+            default:
+                resourceName = "List_of_items_by_index_number_(Generation_VII)";
+                break;
+            }
+            return BaseContentQuery(resourceName, 0, ResourceType.Miscellaneous);
+        }
         public static string PokemonSectionsQuery(string pokemonName)
         {
             return BaseSectionsQuery(pokemonName, ResourceType.Pokemon);

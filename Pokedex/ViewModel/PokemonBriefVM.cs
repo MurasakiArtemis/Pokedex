@@ -1,12 +1,15 @@
 ﻿using Pokedex.Communication;
 using Pokedex.Model;
+using Pokedex.Model.Wrappers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Pokedex.ViewModel
 {
@@ -48,8 +51,8 @@ namespace Pokedex.ViewModel
             }
         }
 
-        private IncrementalLoadingCollection _pokemonBriefList;
-        public IncrementalLoadingCollection PokemonBriefList
+        private IncrementalLoadingCollection<PokemonBrief> _pokemonBriefList;
+        public IncrementalLoadingCollection<PokemonBrief> PokemonBriefList
         {
             get { return _pokemonBriefList; }
             set
@@ -98,7 +101,7 @@ namespace Pokedex.ViewModel
                 var lastPokemonData = PokemonCompleteListData.ElementAt(numberOfPokemon - 1);
                 var splitedString = lastPokemonData.Split('|');
                 LastPokemonDex = int.Parse(Regex.Replace(splitedString.ElementAt(2), "[A-Za-z ]", ""));
-                PokemonBriefList = new IncrementalLoadingCollection(LastPokemonDex, PokemonCompleteListData);
+                PokemonBriefList = new IncrementalLoadingCollection<PokemonBrief>(LastPokemonDex, GetElementsList, LoadIndividualItem);
             }
             catch
             {
@@ -108,6 +111,47 @@ namespace Pokedex.ViewModel
             {
                 IsBusy = false;
             }
+        }
+        private IEnumerable<PokemonBrief> GetElementsList(long start, long end)
+        {
+            Func<string, PokemonBrief> selectionFunction = p =>
+            {
+                var splitedString = p.Split('|');
+                int nationalDex;
+                if (!int.TryParse(splitedString.ElementAt(2), out nationalDex))
+                    nationalDex = int.Parse(Regex.Replace(splitedString.ElementAt(2), "[A-Za-z ]", ""));
+                string imageRelativeLink = $"File:{splitedString.ElementAt(2)}MS.png";
+                var name = splitedString.ElementAt(3);
+                var types = new ObservableCollection<SlotType>();
+                var numberOfTypes = int.Parse(splitedString.ElementAt(4));
+                for (int i = 0; i < numberOfTypes; i++)
+                {
+                    var temporalTypeResult = splitedString.ElementAt(5 + i);
+                    PokemonType result = (PokemonType)Enum.Parse(typeof(PokemonType), temporalTypeResult);
+                    types.Add(new SlotType() { Slot = i == 0 ? TypeSlot.Primary : TypeSlot.Secondary, Type = result });
+                }
+                return new PokemonBrief() { Name = name, NationalDex = nationalDex, ImageRelativeLink = imageRelativeLink, Types = types, URL = UrlQueryBuilder.PokemonUrlQuery(name) };
+            };
+            Func<string, bool> whereFunction = p =>
+            {
+                var splitedString = p.Split('|');
+                int nationalDex = int.Parse(Regex.Replace(splitedString.ElementAt(2), "[A-Za-z ]", ""));
+                bool result = nationalDex > start;
+                result &= nationalDex <= end;
+                return result;
+            };
+            var pokemonDataEnumerable = PokemonCompleteListData.Where(whereFunction).Select(selectionFunction);
+            return pokemonDataEnumerable;
+        }
+        private async Task<PokemonBrief> LoadIndividualItem(PokemonBrief pokemonElement)
+        {
+            HttpCommunication client = new HttpCommunication();
+            var linkData = await client.GetResponse(UrlQueryBuilder.BasePictureLocationQuery(pokemonElement.ImageRelativeLink));
+            var dataString = JsonDataExtractor.ExtractPictureUrl(linkData);
+            Uri imageUri = new Uri(dataString);
+            BitmapImage image = new BitmapImage(imageUri);
+            pokemonElement.Image = image;
+            return pokemonElement;
         }
     }
 }

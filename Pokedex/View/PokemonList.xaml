@@ -54,7 +54,7 @@
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Background="Transparent">
                                 <TextBlock VerticalAlignment="Center" Text="{x:Bind NationalDex, Converter={StaticResource StringFormatter}, ConverterParameter=PokemonListNumber}" Margin="{StaticResource InternalMargin}"/>
                                 <Image VerticalAlignment="Center" Source="{x:Bind Image}" Margin="{StaticResource InternalMargin}" x:Phase="3"/>
-                                <TextBlock VerticalAlignment="Center" Text="{x:Bind Name}" Margin="{StaticResource InternalMargin}" Width="100" x:Phase="1"/>
+                                <TextBlock VerticalAlignment="Center" Text="{x:Bind Name}" Margin="{StaticResource InternalMargin}" Width="100"/>
                                 <ListView VerticalAlignment="Center" Background="Transparent" ItemsSource="{x:Bind Types}" Margin="{StaticResource InternalMargin}" x:Phase="2" IsItemClickEnabled="False" SelectionMode="None">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="wrappers:SlotType">
