@@ -8,7 +8,8 @@ namespace Pokedex.View.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (!((value is double) || (value is int) || (value is string) || (value is Region)))
+            Type type = value.GetType();
+            if (!((value is double) || (value is int) || (value is string) || (value is Region) || (value is int?)))
                 throw new ArgumentException("Value is not of accepted type");
             string text;
             switch(parameter as string)
@@ -100,6 +101,18 @@ namespace Pokedex.View.Converters
                     text = null;
                     break;
                 }
+                break;
+            case "Buy":
+                if ((int)value == 0)
+                    text = "Cannot be bought";
+                else
+                    text = $"{(int)value}";
+                break;
+            case "Sell":
+                if ((int)value == 0)
+                    text = "Cannot be sold";
+                else
+                    text = $"{(int)value}";
                 break;
             default:
                 text = $"{(double)value}";

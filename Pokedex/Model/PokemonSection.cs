@@ -2,6 +2,6 @@
 {
     public enum PokemonSection
     {
-        Base, Evolution
+        Base, Evolution, Item
     }
 }

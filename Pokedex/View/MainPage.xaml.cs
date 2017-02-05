@@ -20,9 +20,9 @@ namespace Pokedex.View
         {
             this.InitializeComponent();
             PaneObjectsList = new List<PaneIconDescription>();
-            PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Pokemon, Description = "Pokémon", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Square71x71Logo.scale-100.png")) });
-            //PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Ability, Description = "Abilities", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Icon-2.ico")) });
-            //PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Item, Description = "Items", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Icon-2.ico")) });
+            PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Pokemon, Description = "Pokémon", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Square44x44Logo.scale-100.png")) });
+            //PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Ability, Description = "Abilities", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Square44x44Logo.scale-100.png")) });
+            PaneObjectsList.Add(new PaneIconDescription() { Type = ResourceType.Item, Description = "Items", Icon = new BitmapImage(new Uri("ms-appx:///Assets/Square44x44Logo.scale-100.png")) });
         }
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
@@ -55,6 +55,8 @@ namespace Pokedex.View
             case ResourceType.Miscellaneous:
             case ResourceType.Ability:
             case ResourceType.Item:
+                ContentFrame.Navigate(typeof(ItemList));
+                break;
             default:
                 break;
             }

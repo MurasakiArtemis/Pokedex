@@ -9,13 +9,12 @@ using System;
 using Pokedex.Model.Wrappers;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Pokedex.ViewModel
 {
     public class PokemonVM : INotifyPropertyChanged
     {
-        private Pokemon _currentPokemon;
-
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         void RaiseProperty([CallerMemberName]string propertyName = "")
         {
@@ -49,6 +48,8 @@ namespace Pokedex.ViewModel
                 }
             }
         }
+
+        private Pokemon _currentPokemon;
         public Pokemon CurrentPokemon
         {
             get { return _currentPokemon; }
@@ -313,7 +314,12 @@ namespace Pokedex.ViewModel
                     break;
                 }
                 if (!string.IsNullOrEmpty(temporalResult))
-                    regionsAndNumbers.Add(new RegionNumber() { Region = region, RegionalDex = int.Parse(temporalResult) });
+                {
+                    int regionalDex;
+                    if (!int.TryParse(temporalResult, out regionalDex))
+                        regionalDex = int.Parse(Regex.Replace(temporalResult, @"[\D]", ""));
+                    regionsAndNumbers.Add(new RegionNumber() { Region = region, RegionalDex = regionalDex });
+                }
             }
             return regionsAndNumbers;
         }

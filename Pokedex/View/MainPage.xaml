@@ -55,14 +55,14 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource SplitViewTogglePaneButtonStyle}" Click="HamburgerButton_Click"/>
-        <AutoSuggestBox Grid.Row="0" Grid.Column="2" QueryIcon="Find" Margin="0,8,0,8" TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" PlaceholderText="{x:Bind ContentFrame.Content, Converter={StaticResource FrameStringConverter}}" MinWidth="160"/>
+        <AutoSuggestBox Grid.Row="0" Grid.Column="2" QueryIcon="Find" Margin="0,8,8,8" TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" PlaceholderText="{x:Bind ContentFrame.Content, Converter={StaticResource FrameStringConverter}}" MinWidth="160"/>
         <SplitView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="Transparent" x:Name="NavMenu" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="48" HorizontalAlignment="Stretch">
             <SplitView.Pane>
-                <ListView ItemClick="NavListView_ItemClick" ItemsSource="{x:Bind PaneObjectsList}">
+                <ListView ItemClick="NavListView_ItemClick" ItemsSource="{x:Bind PaneObjectsList}" IsItemClickEnabled="True">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="wrappers:PaneIconDescription">
                             <StackPanel Orientation="Horizontal">
-                                <Image Height="48" Source="{x:Bind Icon}"/>
+                                <Image Height="48" Width="48" Source="{x:Bind Icon}"/>
                                 <TextBlock VerticalAlignment="Center" Text="{x:Bind Description}"/>
                             </StackPanel>
                         </DataTemplate>

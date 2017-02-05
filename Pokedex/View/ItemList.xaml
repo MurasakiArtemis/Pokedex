@@ -1,0 +1,69 @@
+﻿<Page
+    x:Class="Pokedex.View.ItemList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Pokedex.View"
+    xmlns:converters="using:Pokedex.View.Converters"
+    xmlns:vm="using:Pokedex.ViewModel"
+    xmlns:model="using:Pokedex.Model"
+    xmlns:wrappers="using:Pokedex.Model.Wrappers"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <vm:ItemBriefVM x:Key="ItemBriefVM" x:Name="ItemBriefVM"/>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStates">
+                <VisualState x:Name="StackedLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="DetailsFrame.Visibility" Value="Collapsed"/>
+                        <Setter Target="MasterColumn.Width" Value="*"/>
+                        <Setter Target="DetailsColumn.Width" Value="0"/>
+                        <Setter Target="MasterList.Margin" Value="4,0,4,0"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SideBySideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <ProgressBar IsIndeterminate="True" Visibility="{x:Bind ItemBriefVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{StaticResource ErrorMessage}" Visibility="{x:Bind ItemBriefVM.IsError, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay}"/>
+        <Grid Visibility="{x:Bind ItemBriefVM.IsBusy, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="MasterColumn" Width="Auto"/>
+                <ColumnDefinition x:Name="DetailsColumn" Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="MasterList" Grid.Column="0" ShowsScrollingPlaceholders="True" ItemClick="ListView_ItemClick" ItemsSource="{x:Bind ItemBriefVM.ItemBriefList, Mode=OneWay}" IsItemClickEnabled="True" HorizontalAlignment="Stretch" Visibility="{x:Bind ItemBriefVM.IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:ItemBrief">
+                        <Border BorderThickness="{StaticResource InternalMargin}" BorderBrush="{x:Bind Pocket, Converter={StaticResource PocketColorConverter}}" Margin="{StaticResource InternalMargin}" CornerRadius="8" Background="Transparent">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Background="Transparent">
+                                <Image VerticalAlignment="Center" Source="{x:Bind Image}" Margin="{StaticResource InternalMargin}" x:Phase="3"/>
+                                <TextBlock VerticalAlignment="Center" Text="{x:Bind Name}" Margin="{StaticResource InternalMargin}" Width="100"/>
+                                <TextBlock VerticalAlignment="Center" Text="{x:Bind Category}" Margin="{StaticResource InternalMargin}" Width="100" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+                                <TextBlock VerticalAlignment="Center" Text="{x:Bind Pocket}" Margin="{StaticResource InternalMargin}" Width="100"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Frame x:Name="DetailsFrame" Grid.Column="1" Visibility="{x:Bind ItemBriefVM.IsError, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=Reverse, Mode=OneWay}">
+                <TextBlock Text="{StaticResource DefaultMessage}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Frame>
+        </Grid>
+    </Grid>
+</Page>

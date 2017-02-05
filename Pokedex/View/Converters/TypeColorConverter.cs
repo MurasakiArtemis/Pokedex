@@ -77,38 +77,15 @@ namespace Pokedex.View.Converters
             switch (parameter as string)
             {
             case "Lighter":
-                colour = ChangeColorBrightness(colour, .5);
+                colour = ColourModifier.ChangeColorBrightness(colour, .5);
                 break;
             case "Darker":
-                colour = ChangeColorBrightness(colour, -.5);
+                colour = ColourModifier.ChangeColorBrightness(colour, -.5);
                 break;
             default:
                 break;
             }
             return colour;
-        }
-
-        public static SolidColorBrush ChangeColorBrightness(SolidColorBrush color, double correctionFactor)
-        {
-            double red = color.Color.R;
-            double green = color.Color.G;
-            double blue = color.Color.B;
-
-            if (correctionFactor < 0)
-            {
-                correctionFactor = 1 + correctionFactor;
-                red *= correctionFactor;
-                green *= correctionFactor;
-                blue *= correctionFactor;
-            }
-            else
-            {
-                red = (255 - red) * correctionFactor + red;
-                green = (255 - green) * correctionFactor + green;
-                blue = (255 - blue) * correctionFactor + blue;
-            }
-
-            return new SolidColorBrush(Color.FromArgb(color.Color.A, (byte)red, (byte)green, (byte)blue));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

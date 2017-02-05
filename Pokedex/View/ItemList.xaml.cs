@@ -7,11 +7,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Pokedex.View
 {
-    public sealed partial class PokemonList : Page, INavigableFrame, IContentList
+    public sealed partial class ItemList : Page, INavigableFrame, IContentList
     {
-        public IEnumerable<string> ContentList { get { return PokemonBriefVM.DataList; } }
+        public IEnumerable<string> ContentList { get { return ItemBriefVM.DataList; } }
         public Frame NavigableFrame { get { return VisualStates.CurrentState == StackedLayout ? Frame : DetailsFrame; } }
-        public PokemonList()
+        public ItemList()
         {
             this.InitializeComponent();
         }
@@ -25,7 +25,7 @@ namespace Pokedex.View
         }
         private async void LoadInformation()
         {
-            await PokemonBriefVM.GetPokemonList();
+            await ItemBriefVM.GetItemList();
             Bindings.Update();
         }
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
@@ -38,12 +38,12 @@ namespace Pokedex.View
         }
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var pokemon = e.ClickedItem as PokemonBrief;
-            NavigateDefault(pokemon.Name);
+            var item = e.ClickedItem as ItemBrief;
+            NavigateDefault(new string[] { item.Name, item.Category });
         }
         public void NavigateDefault(object parameter)
         {
-            NavigableFrame.Navigate(typeof(PokemonDetail), parameter);
+            NavigableFrame.Navigate(typeof(ItemDetail), parameter);
         }
     }
 }

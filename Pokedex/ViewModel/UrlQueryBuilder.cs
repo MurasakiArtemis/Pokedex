@@ -1,4 +1,6 @@
-﻿namespace Pokedex.Model
+﻿using System;
+
+namespace Pokedex.Model
 {
     public static class UrlQueryBuilder
     {
@@ -21,6 +23,7 @@
             case ResourceType.Ability:
                 resourceTypeString = "_(Ability)";
                 break;
+            case ResourceType.Item:
             case ResourceType.Miscellaneous:
             default:
                 break;
@@ -55,9 +58,17 @@
         {
             return BaseUrlQuery(pokemonName, ResourceType.Pokemon);
         }
+        public static string ItemUrlQuery(string itemName, string itemCategory)
+        {
+            return BaseUrlQuery($"{itemCategory}#{itemName.Replace(' ', '_')}", ResourceType.Item);
+        }
         public static string PokemonContentQuery(string pokemonName, int section)
         {
             return BaseContentQuery(pokemonName, section, ResourceType.Pokemon);
+        }
+        public static string ItemContentQuery(string category, int section)
+        {
+            return BaseContentQuery(category, section, ResourceType.Item);
         }
         public static string PokemonParseQuery(string pokemonName, int section)
         {
@@ -95,9 +106,45 @@
             }
             return BaseContentQuery("List_of_Pokémon_by_National_Pokédex_number", section, ResourceType.Miscellaneous);
         }
+        public static string ItemListQuery(Generation generation)
+        {
+            string resourceName;
+            switch (generation)
+            {
+            case Generation.First:
+                resourceName = "List_of_items_by_index_number_(Generation_I)";
+                break;
+            case Generation.Second:
+                resourceName = "List_of_items_by_index_number_(Generation_II)";
+                break;
+            case Generation.Third:
+                resourceName = "List_of_items_by_index_number_(Generation_III)";
+                break;
+            case Generation.Fourth:
+                resourceName = "List_of_items_by_index_number_(Generation_IV)";
+                break;
+            case Generation.Fifth:
+                resourceName = "List_of_items_by_index_number_(Generation_V)";
+                break;
+            case Generation.Sixth:
+                resourceName = "List_of_items_by_index_number_(Generation_VI)";
+                break;
+            case Generation.Seventh:
+                resourceName = "List_of_items_by_index_number_(Generation_VII)";
+                break;
+            default:
+                resourceName = "List_of_items_by_index_number_(Generation_VII)";
+                break;
+            }
+            return BaseContentQuery(resourceName, 0, ResourceType.Miscellaneous);
+        }
         public static string PokemonSectionsQuery(string pokemonName)
         {
             return BaseSectionsQuery(pokemonName, ResourceType.Pokemon);
+        }
+        public static string ItemSectionsQuery(string category)
+        {
+            return BaseSectionsQuery(category, ResourceType.Item);
         }
     }
 }
