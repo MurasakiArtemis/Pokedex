@@ -52,7 +52,6 @@
                     <DataTemplate x:DataType="model:ItemBrief">
                         <Border BorderThickness="{StaticResource InternalMargin}" BorderBrush="{x:Bind Pocket, Converter={StaticResource PocketColorConverter}}" Margin="{StaticResource InternalMargin}" CornerRadius="8" Background="Transparent">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Background="Transparent">
-                                <TextBlock VerticalAlignment="Center" Text="{x:Bind Index, Converter={StaticResource StringFormatter}, ConverterParameter=PokemonListNumber}" Margin="{StaticResource InternalMargin}"/>
                                 <Image VerticalAlignment="Center" Source="{x:Bind Image}" Margin="{StaticResource InternalMargin}" x:Phase="3"/>
                                 <TextBlock VerticalAlignment="Center" Text="{x:Bind Name}" Margin="{StaticResource InternalMargin}" Width="100"/>
                                 <TextBlock VerticalAlignment="Center" Text="{x:Bind Category}" Margin="{StaticResource InternalMargin}" Width="100" TextWrapping="WrapWholeWords" TextAlignment="Center"/>

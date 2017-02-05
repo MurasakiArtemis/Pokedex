@@ -16,7 +16,7 @@ namespace Pokedex.View
         {
             var button = (HyperlinkButton)sender;
             var text = ((StackPanel)button.Content).Children.OfType<TextBlock>().First(f => f.Name == "MegaStoneName").Text;
-            //Frame.Navigate();
+            Frame.Navigate(typeof(ItemDetail), new string[] { text, "Mega Stone" });
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

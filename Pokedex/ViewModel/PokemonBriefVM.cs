@@ -101,7 +101,7 @@ namespace Pokedex.ViewModel
                 var lastPokemonData = PokemonCompleteListData.ElementAt(numberOfPokemon - 1);
                 var splitedString = lastPokemonData.Split('|');
                 LastPokemonDex = int.Parse(Regex.Replace(splitedString.ElementAt(2), "[A-Za-z ]", ""));
-                PokemonBriefList = new IncrementalLoadingCollection<PokemonBrief>(LastPokemonDex, GetElementsList, LoadIndividualItem);
+                PokemonBriefList = new IncrementalLoadingCollection<PokemonBrief>(numberOfPokemon, GetElementsList, LoadIndividualItem);
             }
             catch
             {
@@ -132,12 +132,12 @@ namespace Pokedex.ViewModel
                 }
                 return new PokemonBrief() { Name = name, NationalDex = nationalDex, ImageRelativeLink = imageRelativeLink, Types = types, URL = UrlQueryBuilder.PokemonUrlQuery(name) };
             };
-            Func<string, bool> whereFunction = p =>
+            Func<string, int, bool> whereFunction = (p, i) =>
             {
                 var splitedString = p.Split('|');
                 int nationalDex = int.Parse(Regex.Replace(splitedString.ElementAt(2), "[A-Za-z ]", ""));
-                bool result = nationalDex > start;
-                result &= nationalDex <= end;
+                bool result = i >= start;
+                result &= i < end;
                 return result;
             };
             var pokemonDataEnumerable = PokemonCompleteListData.Where(whereFunction).Select(selectionFunction);

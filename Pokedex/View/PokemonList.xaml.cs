@@ -39,10 +39,7 @@ namespace Pokedex.View
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var pokemon = e.ClickedItem as PokemonBrief;
-            if(VisualStates.CurrentState == StackedLayout)
-                Frame.Navigate(typeof(PokemonDetail), pokemon.Name);
-            else
-                DetailsFrame.Navigate(typeof(PokemonDetail), pokemon.Name);
+            NavigateDefault(pokemon.Name);
         }
         public void NavigateDefault(object parameter)
         {

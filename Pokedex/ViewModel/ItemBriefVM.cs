@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
@@ -50,6 +49,20 @@ namespace Pokedex.ViewModel
             }
         }
 
+        private string _errorDescription;
+        public string ErrorDescription
+        {
+            get { return _errorDescription; }
+            set
+            {
+                if (value != _errorDescription)
+                {
+                    _errorDescription = value;
+                    RaiseProperty();
+                }
+            }
+        }
+
         private IncrementalLoadingCollection<ItemBrief> _itemBriefList;
         public IncrementalLoadingCollection<ItemBrief> ItemBriefList
         {
@@ -84,7 +97,13 @@ namespace Pokedex.ViewModel
         {
             var replacedString = JsonDataExtractor.ExtractContent(data).Replace("\"", "");
             var semiParsedString = replacedString.Split(new string[] { "}}\\n{{" }, StringSplitOptions.RemoveEmptyEntries);
-            var pokemonDataEnumerable = semiParsedString.Where(p => p.StartsWith("hexlist|") && !p.Contains("???"));
+            var pokemonDataEnumerable = semiParsedString.Where(p => 
+                p.StartsWith("hexlist|") && 
+                !p.Contains("???") && 
+                (p.Contains("Evolutionary stone") 
+                    || p.Contains("Evolution-inducing held item")
+                    || p.Contains("Incense")
+                    || p.Contains("Mega Stone")));
             return pokemonDataEnumerable;
         }
         public async Task GetItemList()
@@ -102,9 +121,15 @@ namespace Pokedex.ViewModel
                 LastItemIndex = int.Parse(splitedString.ElementAt(3));
                 ItemBriefList = new IncrementalLoadingCollection<ItemBrief>(LastItemIndex, GetElementsList, LoadIndividualItem);
             }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                IsError = true;
+                ErrorDescription = (string)App.Current.Resources["InternetErrorMessage"];
+            }
             catch
             {
                 IsError = true;
+                ErrorDescription = (string)App.Current.Resources["ErrorMessage"]; ;
             }
             finally
             {
@@ -153,12 +178,10 @@ namespace Pokedex.ViewModel
 
                 return new ItemBrief() { Category = category, ImageRelativeLink = imageRelativeLink, Index = index, Name = name, Pocket = pocket };
             };
-            Func<string, bool> whereFunction = p =>
+            Func<string, int, bool> whereFunction = (p, b) =>
             {
-                var splitedString = p.Split('|');
-                int index = int.Parse(splitedString.ElementAt(3));
-                bool result = index > start;
-                result &= index <= end;
+                bool result = b >= start;
+                result &= b < end;
                 return result;
             };
             var pokemonDataEnumerable = ItemCompleteListData.Where(whereFunction).Select(selectionFunction);

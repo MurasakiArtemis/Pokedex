@@ -10,7 +10,8 @@
         <ResourceDictionary>
             <x:String x:Key="BulbapediaApiBaseUrl">http://bulbapedia.bulbagarden.net/w/</x:String>
             <x:String x:Key="BulbapediaBaseUrl">http://bulbapedia.bulbagarden.net/wiki/</x:String>
-            <x:String x:Key="ErrorMessage">An error occurred, Check your internet configuration and try again later</x:String>
+            <x:String x:Key="ErrorMessage">An error ocurred&#x0a;If the problem persists send information about the error</x:String>
+            <x:String x:Key="InternetErrorMessage">An error occurred&#x0a;Check your internet configuration and try again later</x:String>
             <x:String x:Key="DefaultMessage">Select an option from the menu</x:String>
             <converters:TypeColorConverter x:Key="TypeColorConverter"/>
             <converters:StringImageSourceConverter x:Key="StringImageSourceConverter"/>

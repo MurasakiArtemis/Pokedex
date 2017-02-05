@@ -38,6 +38,9 @@ namespace Pokedex.ViewModel
             case Model.PokemonSection.Evolution:
                 section = int.Parse(sectionsList.First(p => p.anchor == "Evolution").index);
                 break;
+            case Model.PokemonSection.Item:
+                section = int.Parse(sectionsList.First(p => p.anchor.Contains("Types_of") || p.anchor.Contains("List_of")).index);
+                break;
             default:
                 section = -1;
                 break;

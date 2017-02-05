@@ -1,4 +1,6 @@
-﻿namespace Pokedex.Model
+﻿using System;
+
+namespace Pokedex.Model
 {
     public static class UrlQueryBuilder
     {
@@ -21,6 +23,7 @@
             case ResourceType.Ability:
                 resourceTypeString = "_(Ability)";
                 break;
+            case ResourceType.Item:
             case ResourceType.Miscellaneous:
             default:
                 break;
@@ -55,9 +58,17 @@
         {
             return BaseUrlQuery(pokemonName, ResourceType.Pokemon);
         }
+        public static string ItemUrlQuery(string itemName, string itemCategory)
+        {
+            return BaseUrlQuery($"{itemCategory}#{itemName.Replace(' ', '_')}", ResourceType.Item);
+        }
         public static string PokemonContentQuery(string pokemonName, int section)
         {
             return BaseContentQuery(pokemonName, section, ResourceType.Pokemon);
+        }
+        public static string ItemContentQuery(string category, int section)
+        {
+            return BaseContentQuery(category, section, ResourceType.Item);
         }
         public static string PokemonParseQuery(string pokemonName, int section)
         {
@@ -130,6 +141,10 @@
         public static string PokemonSectionsQuery(string pokemonName)
         {
             return BaseSectionsQuery(pokemonName, ResourceType.Pokemon);
+        }
+        public static string ItemSectionsQuery(string category)
+        {
+            return BaseSectionsQuery(category, ResourceType.Item);
         }
     }
 }

@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Communication\HttpCommunication.cs" />
     <Compile Include="Model\Form.cs" />
+    <Compile Include="Model\Item.cs" />
     <Compile Include="Model\ItemBrief.cs" />
     <Compile Include="Model\Pocket.cs" />
     <Compile Include="Model\PokemonSection.cs" />
@@ -106,6 +107,8 @@
     <Compile Include="Model\PokemonBrief.cs" />
     <Compile Include="Model\Generation.cs" />
     <Compile Include="Model\Pokemon.cs" />
+    <Compile Include="Model\Wrappers\GameDescription.cs" />
+    <Compile Include="Model\Wrappers\GameLocation.cs" />
     <Compile Include="Model\Wrappers\MegaStonePicture.cs" />
     <Compile Include="Model\Wrappers\PaneIconDescription.cs" />
     <Compile Include="Model\Wrappers\SlotType.cs" />
@@ -117,6 +120,7 @@
     <Compile Include="ViewModel\INavigableFrame.cs" />
     <Compile Include="ViewModel\IncrementalLoadingCollection.cs" />
     <Compile Include="ViewModel\ItemBriefVM.cs" />
+    <Compile Include="ViewModel\ItemVM.cs" />
     <Compile Include="ViewModel\JsonDataExtractor.cs" />
     <Compile Include="ViewModel\UrlQueryBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,6 +136,9 @@
     <Compile Include="View\Converters\StringImageSourceConverter.cs" />
     <Compile Include="View\Converters\StringVisibilityConverter.cs" />
     <Compile Include="View\Converters\TypeColorConverter.cs" />
+    <Compile Include="View\ItemDetail.xaml.cs">
+      <DependentUpon>ItemDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ItemList.xaml.cs">
       <DependentUpon>ItemList.xaml</DependentUpon>
     </Compile>
@@ -188,6 +195,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\ItemDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ItemList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
