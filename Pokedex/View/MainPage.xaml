@@ -62,7 +62,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="wrappers:PaneIconDescription">
                             <StackPanel Orientation="Horizontal">
-                                <Image Height="48" Width="48" Source="{x:Bind Icon}"/>
+                                <Image Height="36" Width="36" Source="{x:Bind Icon}" Stretch="Uniform"/>
                                 <TextBlock VerticalAlignment="Center" Text="{x:Bind Description}"/>
                             </StackPanel>
                         </DataTemplate>
